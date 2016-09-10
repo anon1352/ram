@@ -1,0 +1,685 @@
+/* reset css */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section { display: block; }
+body { line-height: 1; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+input,
+select, option,
+textarea,
+button, area { outline:none; }
+
+html,body {
+	width:100%; /*height:100%;*/
+}
+body {
+	background: url(bckg.gif) 0 0 / 4px 4px repeat;
+	padding: 10px 0 50px 0;
+	box-sizing: border-box;
+}
+main {
+	width: 80%;
+	background: white;
+	margin: 0 10%;
+	/*border: 1px solid #ccc;*/
+	box-sizing: border-box;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+nav {
+	list-style: none;
+	background: #222; color: #ccc;
+	width: 100%; height: 40px;
+}
+nav li {
+	float: left;
+	display: inline-block;
+	width: 130px;
+	line-height: 40px;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 10pt;
+	cursor: pointer;
+}
+nav > li:last-child { float: right; }
+nav > li:hover {
+	background: #1a1a1a;
+	box-shadow: 5px 3px 10px black inset, -5px 4px 10px black inset;
+}
+nav li ul { display: none; }
+nav li:hover ul {
+	display: block;
+	position: absolute;
+	background: #111;
+	padding: 10px;
+	width: 700px;
+	z-index: 9;
+}
+nav li ul li {
+	display: inline-block;
+	list-style: none;
+	vertical-align: top;
+	text-transform: none;
+	font-size: 9pt;
+	text-align: left;
+	line-height: 1.5;
+	width: 200px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+nav li ul li:hover {
+	background: yellow;
+	color: #333;
+	font-weight: bold;
+}
+nav li ul li span {
+	opacity: .5;
+	width: 20px;
+	display: inline-block;
+	text-align: center;
+	color: white; background: #333;
+	font-weight: normal;
+	border-radius: 2px;
+}
+nav li ul li:hover span { opacity: 1; }
+
+footer {
+	padding: 20px;
+	background: #f3f3f3;
+	border-top: 1px solid #ccc;
+	color: #555;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 9pt;
+	line-height: 15px;
+	letter-spacing: 1px;
+	border: 1px solid #ccc;
+}
+footer > div:first-child { font-weight: bold; }
+footer > div:last-child { font-size:8pt; color:#999; }
+header {
+	display: table;
+	background: #f3f3f3; color: #555;
+	width: 100%; height: 72px;
+	font-size: 10pt;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+header i {
+	background: url(icon.gif) 4px 4px / 64px 64px no-repeat transparent;
+	display: table-cell;
+	width: 64px;
+	height: 64px;
+	margin: 4px;
+}
+header h3 {
+	display: table-cell;
+	vertical-align: top;
+	width:150px;
+	line-height: 72px;
+	text-align: center;
+	color: #a200a2;
+	font-size: 34pt;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	text-rendering: optimizeLegibility;
+	opacity: 0.9999;
+}
+header span {
+	display: table-cell;
+	vertical-align: top;
+	line-height: 1.2em;
+	text-align: center;
+	vertical-align: middle;
+}
+
+section { text-align: center; }
+
+article {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 200px; height: 270px;
+	margin: 20px;
+	background-position: 0 0;
+	background-size: 200px 270px;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 1px solid #111;
+	box-sizing: border-box;
+	box-shadow: 0 0 12px #999;
+}
+article .title,
+article .description,
+article .full { opacity: 0; }
+article:hover .title,
+article:hover .description,
+article:hover .full { opacity: 1; }
+
+article .title {
+	background: #eee;
+	border-bottom: 1px solid #111;
+}
+.title .orgtitle {
+	margin: 0 10px; padding: 10px 0 5px 0;
+	color: #444;
+	font-size: 11pt;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-bottom: 1px solid #ccc;
+}
+.title .subtitle {
+	padding: 5px 0 10px 0;
+	color: #777;
+	font-size: 9pt;
+	font-style: italic;
+}
+article .description:before { content:'Описание: '; color:#999; }
+article .description {
+	position: absolute;
+	bottom: 21px;
+	width: 100%; height: 60px;
+	background: #eee; color: #444;
+	padding: 5px;
+	font-size: 8pt;
+	text-overflow: ellipsis;
+	text-align: left;
+	white-space: pre;
+	word-wrap: break-word;
+	word-break: break-word;
+	box-sizing: border-box;
+	border-top: 1px solid #111;
+	overflow: hidden;
+}
+article .full {
+	position: absolute;
+	display: block;
+	bottom: 0;
+	background: #333; color: #ccc;
+	width: 100%;
+	cursor: pointer;
+	font-size: 8pt;
+	line-height: 20px;
+	text-shadow: -1px -1px 0px #111;
+	letter-spacing: 1px;
+	border-top: 1px solid #111;
+}
+[data-toggle="false"] > div { visibility: hidden; opacity: 0; }
+[data-toggle="true"] > div { visibility: visible; opacity: 1; }
+[data-toggle="true"] { visibility: visible!important; opacity: 1!important; }
+article .full > div {
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	text-align: center;
+	cursor: default;
+	z-index: 9;
+}
+article .full > div > div {
+	width: 700px; height: 80%;
+	margin: 5% auto 5% auto; padding: 20px;
+	background: white; color: #333;
+	text-align: left;
+	text-shadow: none;
+	border: 1px solid #777;
+	box-sizing: border-box;
+	z-index: 9;
+}
+
+button {
+	margin: 10px auto;
+	cursor: pointer;
+	background: #eee;
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	border-radius: 2px;
+	outline: none;
+}
+button:hover {
+	background: #f2f2f2;
+	border-color: #aaa;
+	box-shadow: 0 0 4px #dfdfdf;
+}
+
+.full .full-poster {
+	float: left;
+	width: 200px; height: 300px;
+	background-position: 0 0;
+	background-size: 200px 300px;
+	margin-right: 20px;
+	border: 1px solid #111;
+	box-sizing: border-box;
+}
+.full .full-about {}
+.full-about > div { margin-bottom: 2px; cursor: text; z-index: 9; }
+.full-year:before,
+.full-duration:before,
+.full-genre:before,
+.full-country:before,
+.full-budget:before,
+.full-rating:before {
+	display: inline-block;
+	background: #eee;
+	width: 100px;
+	margin-right: 5px; padding: 0 5px;
+	line-height: 20px;
+}
+
+.full-title {
+	padding-bottom: 5px;
+	color: #555;
+	text-align: right;
+	font-size: 14pt;
+	font-weight: bold;
+	border-bottom: 1px solid #777;
+}
+.full-subtitle {
+	position: relative;
+	text-align: right;
+	font-size: 10pt;
+	color: #aaa;
+}
+.full-subtitle > div {
+	position: absolute;
+	right: 0;
+}
+.full-year:before { content:'Год'; }
+.full-year {}
+.full-duration:before { content:'Длительность'; }
+.full-duration:after { content: ' мин.'; }
+.full-duration {}
+.full-genre:before { content:'Жанры'; }
+.full-genre {}
+.full-genre kbd {
+	color: dodgerblue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.full-country:before { content:'Страна'; }
+.full-country {}
+.full-budget:before { content:'Бюджет'; }
+.full-budget {}
+.full-rating:before { content:'Рейтинги'; }
+.full-rating {}
+.full-desc {
+	font-size: 10pt;
+	letter-spacing: 0;
+	margin-top: 25px;
+}
+.rating:before {
+	content: ' ';
+	display: inline-block;
+	width: 100px; height: 20px;
+	padding-left: 5px;
+	background: url(rating.gif) 0 0 / 100px 20px no-repeat transparent;
+}
+.rating.imdb:before { content:'IMDB:'; }
+.rating.kinopoisk:before { content:'Kinopoisk:' }
+.rating {
+	width: 100px;
+	margin-right: 15px;
+	cursor: pointer;
+}
+.rating span { margin-left: -35px; }
+.full-elite,
+.full-yoba,
+.full-done,
+.full-cs,
+.full-fail {
+	display: inline-block;
+	color: #333;
+	margin-top: 10px; padding: 0 5px;
+	font-size: 6pt;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	line-height: 15px;
+	border: 1px solid;
+}
+
+#content {
+	padding: 20px;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+#counter {
+	display: block;
+	line-height: 45px;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 10pt;
+	color: #aaa;
+}
+#loader {
+	display: block;
+	background: url(loader.gif) center center / 40px 40px no-repeat transparent;
+	width: 100%;
+	height: 40px;
+	text-align: center;
+	padding: 40px 0;
+	box-sizing: border-box;
+}
+#error {
+	display: none;
+	padding: 20px 0;
+	background: #ccc;
+	text-align: center;
+	line-height: 30px;
+	font-size: 10pt;
+	font-weight: bold;
+}
+#moar { display: none; }
+.smooth,
+.smooth > li,
+.smooth > div,
+.smooth > label {
+	transition: all .10s ease-in-out;
+	-o-transition: all .10s ease-in-out;
+	-moz-transition: all .10s ease-in-out;
+	-webkit-transition: all .10s ease-in-out;
+	backface-visibility: hidden;
+	-o-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+}
+.flag:before {
+	content: ' ';
+	display: inline-block;
+	width: 20px; height: 18px;
+	background-position: 0 0;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	vertical-align: middle;
+}
+/* А ЗДЕСЬ У НАС 261 СТРОКА ОЧЕНЬ ЭФФЕКТИВНОГО КОДА */
+/* (сгенерированного скриптом) */
+.flag-ad:before { background-image:url(flags/ad.png); }
+.flag-ae:before { background-image:url(flags/ae.png); }
+.flag-af:before { background-image:url(flags/af.png); }
+.flag-ag:before { background-image:url(flags/ag.png); }
+.flag-ai:before { background-image:url(flags/ai.png); }
+.flag-al:before { background-image:url(flags/al.png); }
+.flag-am:before { background-image:url(flags/am.png); }
+.flag-an:before { background-image:url(flags/an.png); }
+.flag-ao:before { background-image:url(flags/ao.png); }
+.flag-aq:before { background-image:url(flags/aq.png); }
+.flag-ar:before { background-image:url(flags/ar.png); }
+.flag-as:before { background-image:url(flags/as.png); }
+.flag-at:before { background-image:url(flags/at.png); }
+.flag-au:before { background-image:url(flags/au.png); }
+.flag-aw:before { background-image:url(flags/aw.png); }
+.flag-ax:before { background-image:url(flags/ax.png); }
+.flag-az:before { background-image:url(flags/az.png); }
+.flag-ba:before { background-image:url(flags/ba.png); }
+.flag-bb:before { background-image:url(flags/bb.png); }
+.flag-bd:before { background-image:url(flags/bd.png); }
+.flag-be:before { background-image:url(flags/be.png); }
+.flag-bf:before { background-image:url(flags/bf.png); }
+.flag-bg:before { background-image:url(flags/bg.png); }
+.flag-bh:before { background-image:url(flags/bh.png); }
+.flag-bi:before { background-image:url(flags/bi.png); }
+.flag-bj:before { background-image:url(flags/bj.png); }
+.flag-bl:before { background-image:url(flags/bl.png); }
+.flag-bm:before { background-image:url(flags/bm.png); }
+.flag-bn:before { background-image:url(flags/bn.png); }
+.flag-bo:before { background-image:url(flags/bo.png); }
+.flag-bq:before { background-image:url(flags/bq.png); }
+.flag-br:before { background-image:url(flags/br.png); }
+.flag-bs:before { background-image:url(flags/bs.png); }
+.flag-bt:before { background-image:url(flags/bt.png); }
+.flag-bv:before { background-image:url(flags/bv.png); }
+.flag-bw:before { background-image:url(flags/bw.png); }
+.flag-by:before { background-image:url(flags/by.png); }
+.flag-bz:before { background-image:url(flags/bz.png); }
+.flag-ca:before { background-image:url(flags/ca.png); }
+.flag-catalonia:before { background-image:url(flags/catalonia.png); }
+.flag-cc:before { background-image:url(flags/cc.png); }
+.flag-cd:before { background-image:url(flags/cd.png); }
+.flag-cf:before { background-image:url(flags/cf.png); }
+.flag-cg:before { background-image:url(flags/cg.png); }
+.flag-ch:before { background-image:url(flags/ch.png); }
+.flag-ci:before { background-image:url(flags/ci.png); }
+.flag-ck:before { background-image:url(flags/ck.png); }
+.flag-cl:before { background-image:url(flags/cl.png); }
+.flag-cm:before { background-image:url(flags/cm.png); }
+.flag-cn:before { background-image:url(flags/cn.png); }
+.flag-co:before { background-image:url(flags/co.png); }
+.flag-cr:before { background-image:url(flags/cr.png); }
+.flag-cs:before { background-image:url(flags/cs.png); }
+.flag-cu:before { background-image:url(flags/cu.png); }
+.flag-cv:before { background-image:url(flags/cv.png); }
+.flag-cw:before { background-image:url(flags/cw.png); }
+.flag-cx:before { background-image:url(flags/cx.png); }
+.flag-cy:before { background-image:url(flags/cy.png); }
+.flag-cz:before { background-image:url(flags/cz.png); }
+.flag-de:before { background-image:url(flags/de.png); }
+.flag-dj:before { background-image:url(flags/dj.png); }
+.flag-dk:before { background-image:url(flags/dk.png); }
+.flag-dm:before { background-image:url(flags/dm.png); }
+.flag-do:before { background-image:url(flags/do.png); }
+.flag-dz:before { background-image:url(flags/dz.png); }
+.flag-ec:before { background-image:url(flags/ec.png); }
+.flag-ee:before { background-image:url(flags/ee.png); }
+.flag-eg:before { background-image:url(flags/eg.png); }
+.flag-eh:before { background-image:url(flags/eh.png); }
+.flag-el:before { background-image:url(flags/el.png); }
+.flag-england:before { background-image:url(flags/england.png); }
+.flag-er:before { background-image:url(flags/er.png); }
+.flag-es:before { background-image:url(flags/es.png); }
+.flag-et:before { background-image:url(flags/et.png); }
+.flag-eu:before { background-image:url(flags/eu.png); }
+.flag-europeanunion:before { background-image:url(flags/europeanunion.png); }
+.flag-fam:before { background-image:url(flags/fam.png); }
+.flag-fi:before { background-image:url(flags/fi.png); }
+.flag-fj:before { background-image:url(flags/fj.png); }
+.flag-fk:before { background-image:url(flags/fk.png); }
+.flag-fm:before { background-image:url(flags/fm.png); }
+.flag-fo:before { background-image:url(flags/fo.png); }
+.flag-fr:before { background-image:url(flags/fr.png); }
+.flag-ga:before { background-image:url(flags/ga.png); }
+.flag-gb:before { background-image:url(flags/gb.png); }
+.flag-gd:before { background-image:url(flags/gd.png); }
+.flag-ge:before { background-image:url(flags/ge.png); }
+.flag-gf:before { background-image:url(flags/gf.png); }
+.flag-gg:before { background-image:url(flags/gg.png); }
+.flag-gh:before { background-image:url(flags/gh.png); }
+.flag-gi:before { background-image:url(flags/gi.png); }
+.flag-gl:before { background-image:url(flags/gl.png); }
+.flag-gm:before { background-image:url(flags/gm.png); }
+.flag-gn:before { background-image:url(flags/gn.png); }
+.flag-gp:before { background-image:url(flags/gp.png); }
+.flag-gq:before { background-image:url(flags/gq.png); }
+.flag-gr:before { background-image:url(flags/gr.png); }
+.flag-gs:before { background-image:url(flags/gs.png); }
+.flag-gt:before { background-image:url(flags/gt.png); }
+.flag-gu:before { background-image:url(flags/gu.png); }
+.flag-gw:before { background-image:url(flags/gw.png); }
+.flag-gy:before { background-image:url(flags/gy.png); }
+.flag-hk:before { background-image:url(flags/hk.png); }
+.flag-hm:before { background-image:url(flags/hm.png); }
+.flag-hn:before { background-image:url(flags/hn.png); }
+.flag-hr:before { background-image:url(flags/hr.png); }
+.flag-ht:before { background-image:url(flags/ht.png); }
+.flag-hu:before { background-image:url(flags/hu.png); }
+.flag-id:before { background-image:url(flags/id.png); }
+.flag-ie:before { background-image:url(flags/ie.png); }
+.flag-il:before { background-image:url(flags/il.png); }
+.flag-im:before { background-image:url(flags/im.png); }
+.flag-in:before { background-image:url(flags/in.png); }
+.flag-io:before { background-image:url(flags/io.png); }
+.flag-iq:before { background-image:url(flags/iq.png); }
+.flag-ir:before { background-image:url(flags/ir.png); }
+.flag-is:before { background-image:url(flags/is.png); }
+.flag-it:before { background-image:url(flags/it.png); }
+.flag-je:before { background-image:url(flags/je.png); }
+.flag-jm:before { background-image:url(flags/jm.png); }
+.flag-jo:before { background-image:url(flags/jo.png); }
+.flag-jp:before { background-image:url(flags/jp.png); }
+.flag-ke:before { background-image:url(flags/ke.png); }
+.flag-kg:before { background-image:url(flags/kg.png); }
+.flag-kh:before { background-image:url(flags/kh.png); }
+.flag-ki:before { background-image:url(flags/ki.png); }
+.flag-km:before { background-image:url(flags/km.png); }
+.flag-kn:before { background-image:url(flags/kn.png); }
+.flag-kp:before { background-image:url(flags/kp.png); }
+.flag-kr:before { background-image:url(flags/kr.png); }
+.flag-kw:before { background-image:url(flags/kw.png); }
+.flag-ky:before { background-image:url(flags/ky.png); }
+.flag-kz:before { background-image:url(flags/kz.png); }
+.flag-la:before { background-image:url(flags/la.png); }
+.flag-lb:before { background-image:url(flags/lb.png); }
+.flag-lc:before { background-image:url(flags/lc.png); }
+.flag-li:before { background-image:url(flags/li.png); }
+.flag-lk:before { background-image:url(flags/lk.png); }
+.flag-lr:before { background-image:url(flags/lr.png); }
+.flag-ls:before { background-image:url(flags/ls.png); }
+.flag-lt:before { background-image:url(flags/lt.png); }
+.flag-lu:before { background-image:url(flags/lu.png); }
+.flag-lv:before { background-image:url(flags/lv.png); }
+.flag-ly:before { background-image:url(flags/ly.png); }
+.flag-ma:before { background-image:url(flags/ma.png); }
+.flag-mc:before { background-image:url(flags/mc.png); }
+.flag-md:before { background-image:url(flags/md.png); }
+.flag-me:before { background-image:url(flags/me.png); }
+.flag-mf:before { background-image:url(flags/mf.png); }
+.flag-mg:before { background-image:url(flags/mg.png); }
+.flag-mh:before { background-image:url(flags/mh.png); }
+.flag-mk:before { background-image:url(flags/mk.png); }
+.flag-ml:before { background-image:url(flags/ml.png); }
+.flag-mm:before { background-image:url(flags/mm.png); }
+.flag-mn:before { background-image:url(flags/mn.png); }
+.flag-mo:before { background-image:url(flags/mo.png); }
+.flag-mp:before { background-image:url(flags/mp.png); }
+.flag-mq:before { background-image:url(flags/mq.png); }
+.flag-mr:before { background-image:url(flags/mr.png); }
+.flag-ms:before { background-image:url(flags/ms.png); }
+.flag-mt:before { background-image:url(flags/mt.png); }
+.flag-mu:before { background-image:url(flags/mu.png); }
+.flag-mv:before { background-image:url(flags/mv.png); }
+.flag-mw:before { background-image:url(flags/mw.png); }
+.flag-mx:before { background-image:url(flags/mx.png); }
+.flag-my:before { background-image:url(flags/my.png); }
+.flag-mz:before { background-image:url(flags/mz.png); }
+.flag-na:before { background-image:url(flags/na.png); }
+.flag-nc:before { background-image:url(flags/nc.png); }
+.flag-ne:before { background-image:url(flags/ne.png); }
+.flag-nf:before { background-image:url(flags/nf.png); }
+.flag-ng:before { background-image:url(flags/ng.png); }
+.flag-ni:before { background-image:url(flags/ni.png); }
+.flag-nl:before { background-image:url(flags/nl.png); }
+.flag-no:before { background-image:url(flags/no.png); }
+.flag-np:before { background-image:url(flags/np.png); }
+.flag-nr:before { background-image:url(flags/nr.png); }
+.flag-nu:before { background-image:url(flags/nu.png); }
+.flag-nz:before { background-image:url(flags/nz.png); }
+.flag-om:before { background-image:url(flags/om.png); }
+.flag-pa:before { background-image:url(flags/pa.png); }
+.flag-pe:before { background-image:url(flags/pe.png); }
+.flag-pf:before { background-image:url(flags/pf.png); }
+.flag-pg:before { background-image:url(flags/pg.png); }
+.flag-ph:before { background-image:url(flags/ph.png); }
+.flag-pk:before { background-image:url(flags/pk.png); }
+.flag-pl:before { background-image:url(flags/pl.png); }
+.flag-pm:before { background-image:url(flags/pm.png); }
+.flag-pn:before { background-image:url(flags/pn.png); }
+.flag-pr:before { background-image:url(flags/pr.png); }
+.flag-ps:before { background-image:url(flags/ps.png); }
+.flag-pt:before { background-image:url(flags/pt.png); }
+.flag-pw:before { background-image:url(flags/pw.png); }
+.flag-py:before { background-image:url(flags/py.png); }
+.flag-qa:before { background-image:url(flags/qa.png); }
+.flag-re:before { background-image:url(flags/re.png); }
+.flag-ro:before { background-image:url(flags/ro.png); }
+.flag-rs:before { background-image:url(flags/rs.png); }
+.flag-ru:before { background-image:url(flags/ru.png); }
+.flag-rw:before { background-image:url(flags/rw.png); }
+.flag-sa:before { background-image:url(flags/sa.png); }
+.flag-sb:before { background-image:url(flags/sb.png); }
+.flag-sc:before { background-image:url(flags/sc.png); }
+.flag-scotland:before { background-image:url(flags/scotland.png); }
+.flag-sd:before { background-image:url(flags/sd.png); }
+.flag-se:before { background-image:url(flags/se.png); }
+.flag-sg:before { background-image:url(flags/sg.png); }
+.flag-sh:before { background-image:url(flags/sh.png); }
+.flag-si:before { background-image:url(flags/si.png); }
+.flag-sj:before { background-image:url(flags/sj.png); }
+.flag-sk:before { background-image:url(flags/sk.png); }
+.flag-sl:before { background-image:url(flags/sl.png); }
+.flag-sm:before { background-image:url(flags/sm.png); }
+.flag-sn:before { background-image:url(flags/sn.png); }
+.flag-so:before { background-image:url(flags/so.png); }
+.flag-sr:before { background-image:url(flags/sr.png); }
+.flag-ss:before { background-image:url(flags/ss.png); }
+.flag-st:before { background-image:url(flags/st.png); }
+.flag-sv:before { background-image:url(flags/sv.png); }
+.flag-sx:before { background-image:url(flags/sx.png); }
+.flag-sy:before { background-image:url(flags/sy.png); }
+.flag-sz:before { background-image:url(flags/sz.png); }
+.flag-tc:before { background-image:url(flags/tc.png); }
+.flag-td:before { background-image:url(flags/td.png); }
+.flag-tf:before { background-image:url(flags/tf.png); }
+.flag-tg:before { background-image:url(flags/tg.png); }
+.flag-th:before { background-image:url(flags/th.png); }
+.flag-tj:before { background-image:url(flags/tj.png); }
+.flag-tk:before { background-image:url(flags/tk.png); }
+.flag-tl:before { background-image:url(flags/tl.png); }
+.flag-tm:before { background-image:url(flags/tm.png); }
+.flag-tn:before { background-image:url(flags/tn.png); }
+.flag-to:before { background-image:url(flags/to.png); }
+.flag-tr:before { background-image:url(flags/tr.png); }
+.flag-tt:before { background-image:url(flags/tt.png); }
+.flag-tv:before { background-image:url(flags/tv.png); }
+.flag-tw:before { background-image:url(flags/tw.png); }
+.flag-tz:before { background-image:url(flags/tz.png); }
+.flag-ua:before { background-image:url(flags/ua.png); }
+.flag-ug:before { background-image:url(flags/ug.png); }
+.flag-uk:before { background-image:url(flags/uk.png); }
+.flag-um:before { background-image:url(flags/um.png); }
+.flag-us:before { background-image:url(flags/us.png); }
+.flag-uy:before { background-image:url(flags/uy.png); }
+.flag-uz:before { background-image:url(flags/uz.png); }
+.flag-va:before { background-image:url(flags/va.png); }
+.flag-vc:before { background-image:url(flags/vc.png); }
+.flag-ve:before { background-image:url(flags/ve.png); }
+.flag-vg:before { background-image:url(flags/vg.png); }
+.flag-vi:before { background-image:url(flags/vi.png); }
+.flag-vn:before { background-image:url(flags/vn.png); }
+.flag-vu:before { background-image:url(flags/vu.png); }
+.flag-wales:before { background-image:url(flags/wales.png); }
+.flag-wf:before { background-image:url(flags/wf.png); }
+.flag-ws:before { background-image:url(flags/ws.png); }
+.flag-xx:before { background-image:url(flags/xx.png); }
+.flag-ye:before { background-image:url(flags/ye.png); }
+.flag-yt:before { background-image:url(flags/yt.png); }
+.flag-za:before { background-image:url(flags/za.png); }
+.flag-zm:before { background-image:url(flags/zm.png); }
+.flag-zw:before { background-image:url(flags/zw.png); }
