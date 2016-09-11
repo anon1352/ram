@@ -12,26 +12,38 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<link rel="icon" href="res/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" type="text/css" media="screen" href="res/style.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="res/fa.css" />
 	<script type="text/javascript" src="res/database.js"></script>
-	<script type="text/javascript" src="res/functions.js?v=1"></script>
+	<script type="text/javascript" src="res/functions.js"></script>
 	<title>[RAMP] Кинотека</title>
 </head>
 <body>
-<main>
+<header>
+	<div>
+		<div id="logo"></div>
+		<span id="quote" class="noselect">Здесь можно выбрать фильм. А можно и не выбирать - у вас полная свобода действий.</span>
+	</div>
 	<nav class="smooth">
-		<li id="feedback">Предложить</li>
-		<li id="tags">Жанры<ul id="taglist"></ul></li>
-		<li id="reset">Сброс</li>
-		<li id="random">Random</li>
+		<li id="feedback"><i class="fa fa-edit"></i>Предложить</li>
+		<li id="tags">
+			<label for="tagwindow"><i class="fa fa-sort-alpha-asc"></i>Жанры</label>
+			<input type="checkbox" id="tagwindow" />
+			<ul id="taglist" class="smooth"></ul>
+		</li>
+		<li id="reset"><i class="fa fa-refresh"></i>Сброс</li>
+		<li id="random"><i class="fa fa-question"></i>Random</li>
+		<li id="random"><i class="fa fa-gear"></i>Настройки</li>
+		<li id="search"><input type="text" placeholder="Поиск" id="ksearch" /><i class="fa fa-search"></i></li>
 	</nav>
-	<header><i></i><h3>RAMP</h3><span>Здесь можно выбрать фильмы на свой вкус.</span></header>
+	<div id="counter"></div>
+	<div id="loader"></div>
+</header>
+<main>
+	<aside id="error"></aside>
 	<aside id="content">
 		<section id="list"></section>
-		<div id="loader"></div>
-		<div id="counter"></div>
 		<button id="moar" class="smooth">MOAR</button>
 	</aside>
-	<aside id="error"></aside>
 	<footer><div>Radio Anonymous: Movies (RAMp) Project</div><div>WTFPL &copy; Anonymous (2016)</div><div>&reg; Yiiii Soft Ltd. &amp; PerlGods Inc.</div></footer>
 </main>
 </body>

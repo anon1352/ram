@@ -17,7 +17,7 @@ Array.prototype.remove=function(index){ if(index>=0 && index<this.length) this.s
 	@
 	HIRE ME TODAY!
 */
-var reset={total:0,shown:0,current:[],tag:''};
+var reset={total:0,shown:0,current:[],tag:'',searching:false};
 var options={
 	limit:12,
 	index:Object.keys(database),
@@ -26,6 +26,7 @@ var options={
 	current:[],
 	tag:'',
 	ellipsis:{F:22,S:33},
+	searching:false,
 	tags:{
 		horror:{title:'Крипота',count:0,tagname:'ужастик'},
 		thriller:{title:'Напрячь нервы',count:0,tagname:'триллер'},
@@ -56,7 +57,9 @@ var DOM={
 	loading:'loader',
 	error:'error',
 	moar:'moar',
-	reset:'reset'
+	reset:'reset',
+	quote:'quote',
+	search:'search',ksearch:'keywords'
 };
 document.addEventListener('mouseout',function(event){ event.preventDefault(); });
 document.addEventListener('DOMContentLoaded',function(){
@@ -74,15 +77,18 @@ document.addEventListener('DOMContentLoaded',function(){
 
 	DOM.feedback.onclick=function(){ window.open("https://anon.fm/feedback/","win1feedback","top=400,left=250,width=560,height=235,toolbar=no"); };
 	DOM.random.onclick=function(){ _reset(); _show(_random()); options.shown=1; _interact(); _count(1,options.total); };
-	DOM.moar.onclick=function(){ _load(); }
+	DOM.moar.onclick=function(){ _load(); };
 	DOM.reset.onclick=function(){ _reset(); _load(); };
+	DOM.quote.onclick=function(){ _quote(); };
+	DOM.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
 
 	_load();
+	_quote();
 },false);
 function _loading(is){ if(is) DOM.loading.reveal(); else DOM.loading.cloak(); return true; }
 function _error(){
 	console.log('\t[RAMP] /!\\ '+arguments[0]+(arguments[1]?' <'+arguments[1]+'>':''));
-	DOM.error.innerHTML=DOM.error.innerHTML+arguments[0]+(arguments[1]?' &lt;'+arguments[1]+'&gt;<br/>':'<br/>');
+	DOM.error.innerHTML=/*DOM.error.innerHTML+*/arguments[0]+(arguments[1]?' &lt;'+arguments[1]+'&gt;<br/>':'<br/>');
 	DOM.error.reveal();
 }
 function _random(list){ return Object.keys(database)[(Math.random()*options.total)<<0]; }
@@ -103,33 +109,26 @@ function _reset(){
 }
 function _load(tag){
 	_loading(1);
+	DOM.error.cloak();
+	if(options.index.length==0){ _error('Ошибка при подзагрузке: индекс пуст, показывать нечего.','Zero index @ _load()'); return false; }
+	if(options.shown==0 && !options.searching){ options.current=options.index.slice(0); }
 	if(tag!==undefined){
 		_reset();
 		options.tag=tag;
+		options.current=[];
+		options.index.forEach(function(element,index){ if(database[element].genre.indexOf(tag)>=0){ options.current.push(element); } });
 	}
-	var go=new Promise(function(resolve,reject){
-		var k='',t=options.index.length;
-		if(options.shown==0){
-			if(options.index.length==0){ reject(); return false; }
-			options.current=options.index.slice(0);
-		}
-		if(options.current.length==0) return false;
-		if(options.tag!=''){
-			_log('now listing by tag: '+options.tag);
-			options.current=[];
-			options.index.forEach(function(element,index){ if(database[element].genre.indexOf(tag)>0){ options.current.push(element); } });
-			t=options.current.length;
-			_log(options.current);
-		}
-		var j=options.limit; if(j>options.current.length) j=options.current.length;
+	var go=new Promise(function(resolve,reject){ // здесь мы только выводим кусок options.current (считая с начала и с лимитом options.limit)
+		if(options.current.length==0){ reject(); return false; }
+		var entry='';
+		var j=options.limit; if(j>=options.current.length) j=options.current.length;
 		for(var i=0; i<j; i++){
-			if(i>=j) break;
-			k=(Math.random()*options.current.length)<<0;
-			if(!_show(options.current[k])){ reject(); return false; }
-			options.current.remove(k);
+			entry=(Math.random()*options.current.length)<<0;
+			if(!_show(options.current[entry])){ reject(); return false; }
+			options.current.remove(entry);
 		}
-		options.shown+=i;
-		_count(options.shown,t);
+		options.shown+=j;
+		_count(options.shown,options.shown+options.current.length);
 		resolve();
 	});
 	go.then(
@@ -137,6 +136,24 @@ function _load(tag){
 		function(){ _error('Ошибка при инициализации.','Catchable promise exception @ _load()'); }
 	);
 	return true;
+}
+function _search(keywords){
+	var list=keywords.split(' ');
+	if(list.length==0) return false;
+	_reset();
+	options.searching=true;
+	list.forEach(function(keyword){
+		options.index.forEach(function(element,index){
+			if(!(database[element].genre.indexOf(keyword)>=0 ||
+				 database[element].description.indexOf(keyword)>=0 ||
+				 database[element].title.indexOf(keyword)>=0 ||
+				 database[element].subtitle.indexOf(keyword)>=0 ||
+				 database[element].country.name.indexOf(keyword)>=0
+			)){ options.current.remove(options.current.indexOf(element)); }
+		});
+	});
+	if(options.current.length==0) _error('Ничего не найдено.');
+	else _load();
 }
 function _count(i,total){ var C=_id('counter'),o=(i<total?i:total); C.innerHTML="Показано "+o+" "+_ending(o)+" из "+total; }
 function _ellipsis(text){ // ВСЁ ОЧЕНЬ ХУЁВО
@@ -259,3 +276,59 @@ function _show(id){
 	DOM.list.appendChild(article);
 	return true;
 }
+var quotes=[
+	'Мы доставляем',
+	'Жарко, как на Масленице!',
+	'Нам нужен микрокислород',
+	'Настало время переплыть Ла-Манш',
+	'А вас любят в ресторанах?',
+	'Лучшие переводы от Маэстро',
+	'Русек акживиряваъ',
+	'Соблюдайте продовольственную безопасность!',
+	'Комнатные диджейские войска',
+	'Прокрастинация однажды проиграет',
+	'Не болтай!',
+	'H - Субботняя конференция',
+	'I - Игроблядск',
+	'P - Правда',
+	'P - Правда',
+	'Ra - Радио',
+	'S - Сеновал',
+	'St - Стартап',
+	'Z - Жроч',
+	'Zh - Жеканы',
+	'Zr - Завтра',
+	'Сейчас я досмотрю вот эту хуйню. Досмотрю свой любимый сериал. А вот за-а-автра...',
+	'С новым годом!',
+	'Охуительные ночные истории',
+	'Котлета, трекбол и велосипед. Вы знаете, о чём это',
+	'Пожалуйста, не умирай, или мне придётся тоже',
+	'В0ШЕДШNХ БYDЕТ ТАIМЛАПS',
+	'Just do it later',
+	'SAIRA',
+	'Бесконечные фильмы',
+	'БРБРАР ДРДРАР',
+	'Спейс эмбиент под водочку',
+	'Чёткий синтипоп в машину',
+	'Не забудьте включить свои охранные нейроамулеты',
+	'Вкусно? Чувствуешь? Это RA!',
+	'And the dreams come true',
+	'OM(K',
+	'ПОП∀ВШNХ В YЛЬRНО .SК Б?DЕТ Е<∀Т РУМbIНSК0I VАМПNР',
+	'Вы должны быть спокойны, ведь кот всегда на месте.',
+	'Опасайтесь ехидных газет!',
+	'Per aspera ad astra',
+	'Нарезки-нарезочки',
+	'Премьер-министр, НЕ-Е-Е-ЕЕТ!',
+	'>поесть кровать',
+	'ЭЛNТА',
+	'Загрузить ассеты!',
+	'Ошибка: нет ошибки.',
+	'A wild black square invaded! &lt;Stochastica sound explored&gt;',
+	'А может, мы забудем всё и сбежим? Навсегда.',
+	'Цифра любимая моя, зелёная.',
+	'Ромио! Ромио! Ромио!',
+	'ПРОГОНДОНЕНО! СЕКАТОРОМ',
+	'Yeah, it is the right position!',
+];
+function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0]; }

@@ -43,73 +43,100 @@ html,body {
 }
 body {
 	background: url(bckg.gif) 0 0 / 4px 4px repeat;
-	padding: 10px 0 50px 0;
-	box-sizing: border-box;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	font:11pt/1.1 "Helvetica Neue", Helvetica, sans-serif;
 }
 main {
-	width: 80%;
-	background: white;
-	margin: 0 10%;
-	/*border: 1px solid #ccc;*/
+	position: fixed;
+	display: inline-block;
+	float: right;
+	margin: 0; padding: 0 20px 20px 220px;
+	width: 100%; height: 100%;
+	background: url(bckg.gif) 0 0 / 4px 4px repeat;
+	/*font-family: Tahoma, Geneva, sans-serif;*/
 	box-sizing: border-box;
-	font-family: Tahoma, Geneva, sans-serif;
+	overflow: auto;
+	vertical-align: top;
 }
 nav {
 	list-style: none;
-	background: #222; color: #ccc;
-	width: 100%; height: 40px;
+	color: #ccc;
+	width: 100%; height: 256px;
 }
 nav li {
-	float: left;
-	display: inline-block;
-	width: 130px;
-	line-height: 40px;
+	display: block;
+	line-height: 30px;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	cursor: pointer;
+	font-size: 8pt;
+	letter-spacing: 1px;
+}
+nav li i {
+	width: 40px;
 	text-align: center;
-	text-transform: uppercase;
-	font-size: 10pt;
+	line-height: 32px!important;
+	vertical-align: top;
+}
+nav > li:hover { background: #583d55; }
+nav label {
+	display: block;
 	cursor: pointer;
 }
-nav > li:last-child { float: right; }
-nav > li:hover {
-	background: #1a1a1a;
-	box-shadow: 5px 3px 10px black inset, -5px 4px 10px black inset;
-}
-nav li ul { display: none; }
-nav li:hover ul {
+nav input[type="checkbox"] { display: none; }
+nav input[type="checkbox"] ~ ul {
 	display: block;
-	position: absolute;
-	background: #111;
-	padding: 10px;
-	width: 700px;
+	position: fixed;
+	top: 0; left: 200px;
+	height: 100%;
+	background: #0b0b0e;
+	padding: 0;
+	width: 200px;
 	z-index: 9;
+	cursor: default;
+	visibility: hidden;
+	opacity: 0;
 }
+nav input[type="checkbox"]:checked ~ ul,
+nav li:hover > ul { left:200px; visibility: visible; opacity: 1; }
 nav li ul li {
-	display: inline-block;
+	display: block;
 	list-style: none;
 	vertical-align: top;
 	text-transform: none;
-	font-size: 9pt;
+	font-size: 8pt;
 	text-align: left;
-	line-height: 1.5;
+	line-height: 20px;
 	width: 200px;
-	padding: 5px;
+	padding: 5px 0;
 	box-sizing: border-box;
 }
-nav li ul li:hover {
-	background: yellow;
-	color: #333;
-	font-weight: bold;
-}
+nav li ul li:hover { background: #583d55; }
 nav li ul li span {
-	opacity: .5;
-	width: 20px;
+	width: 30px;
 	display: inline-block;
 	text-align: center;
-	color: white; background: #333;
+	color: white;
+	background: #111217;
 	font-weight: normal;
-	border-radius: 2px;
 }
 nav li ul li:hover span { opacity: 1; }
+nav input {
+	display: inline;
+	border: none;
+	outline: none;
+	width: 160px;
+	line-height: 30px;
+	color: #ccc; background: transparent;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 8pt;
+	letter-spacing: 1px;
+}
+nav input:focus, nav input:focus ~ i { background: #583d55; }
+nav input ~ i { float: left; }
 
 footer {
 	padding: 20px;
@@ -126,39 +153,17 @@ footer {
 footer > div:first-child { font-weight: bold; }
 footer > div:last-child { font-size:8pt; color:#999; }
 header {
-	display: table;
-	background: #f3f3f3; color: #555;
-	width: 100%; height: 72px;
+	display: inline-block;
+	background: #111217;
+	color: #555;
+	width: 200px;
+	height: 100vh;
+	float: left;
 	font-size: 10pt;
 	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-top: none;
-}
-header i {
-	background: url(icon.gif) 4px 4px / 64px 64px no-repeat transparent;
-	display: table-cell;
-	width: 64px;
-	height: 64px;
-	margin: 4px;
-}
-header h3 {
-	display: table-cell;
 	vertical-align: top;
-	width:150px;
-	line-height: 72px;
-	text-align: center;
-	color: #a200a2;
-	font-size: 34pt;
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
-	text-rendering: optimizeLegibility;
-	opacity: 0.9999;
-}
-header span {
-	display: table-cell;
-	vertical-align: top;
-	line-height: 1.2em;
-	text-align: center;
-	vertical-align: middle;
+	position: fixed;
+	z-index: 9;
 }
 
 section { text-align: center; }
@@ -237,7 +242,7 @@ article .full {
 [data-toggle="true"] { visibility: visible!important; opacity: 1!important; }
 article .full > div {
 	position: fixed;
-	top: 0; left: 0;
+	top: 0; left: 100px;
 	width: 100%; height: 100%;
 	text-align: center;
 	cursor: default;
@@ -251,6 +256,7 @@ article .full > div > div {
 	text-shadow: none;
 	border: 1px solid #777;
 	box-sizing: border-box;
+	box-shadow: 0 0 32px #333;
 	z-index: 9;
 }
 
@@ -356,7 +362,7 @@ button:hover {
 .full-fail {
 	display: inline-block;
 	color: #333;
-	margin-top: 10px; padding: 0 5px;
+	margin-top: 5px; padding: 0 5px;
 	font-size: 6pt;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -365,19 +371,35 @@ button:hover {
 	border: 1px solid;
 }
 
+#logo {
+	display: block;
+	background: url(ra512.png) center center / 64px 64px no-repeat transparent;
+	width: 64px;
+	height: 64px;
+	margin: 20px auto;
+	border-radius: 128px;
+	border: 3px solid white;
+}
 #content {
+	min-height: 70%;
 	padding: 20px;
+	background: white;
 	border-right: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 }
+#quote,
 #counter {
-	display: block;
-	line-height: 45px;
+	display: table-cell;
+	margin: 0; padding: 15px 5px;
+	width: 200px;
+	color: #996793; background: #0b0b0e;
+	line-height: 1.2;
+	letter-spacing: 1px;
 	text-align: center;
-	text-transform: uppercase;
-	font-size: 10pt;
-	color: #aaa;
+	font-size: 8pt;
+	vertical-align: middle;
 }
+#quote { height: 40px; }
 #loader {
 	display: block;
 	background: url(loader.gif) center center / 40px 40px no-repeat transparent;
@@ -397,6 +419,18 @@ button:hover {
 	font-weight: bold;
 }
 #moar { display: none; }
+
+
+
+
+.noselect {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
 .smooth,
 .smooth > li,
 .smooth > div,
@@ -683,3 +717,4 @@ button:hover {
 .flag-za:before { background-image:url(flags/za.png); }
 .flag-zm:before { background-image:url(flags/zm.png); }
 .flag-zw:before { background-image:url(flags/zw.png); }
+.flag-ussr:before { background-image:url(flags/ussr.png); }
