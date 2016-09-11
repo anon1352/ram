@@ -332,3 +332,16 @@ var quotes=[
 	'Yeah, it is the right position!',
 ];
 function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0]; }
+
+/*
+- Planning API by path/location
+- Planning increasing db
+- Planning settings module
+- Planning adding process automatization
+- Planning associative keyword mechanism realisation
+- Planning interface improvements
+- Planning radio support
+- Planning visualizing
+- Planning magnetlinks realization
+- Planning counter improvement
+*/

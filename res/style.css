@@ -78,7 +78,7 @@ nav li {
 nav li i {
 	width: 40px;
 	text-align: center;
-	line-height: 32px!important;
+	line-height: 30px!important;
 	vertical-align: top;
 }
 nav > li:hover { background: #583d55; }
@@ -130,6 +130,7 @@ nav input {
 	outline: none;
 	width: 160px;
 	line-height: 30px;
+	padding: 0;
 	color: #ccc; background: transparent;
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 	font-size: 8pt;
