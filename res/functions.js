@@ -344,4 +344,5 @@ function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0];
 - Planning visualizing
 - Planning magnetlinks realization
 - Planning counter improvement
+- Planning `done` section
 */
