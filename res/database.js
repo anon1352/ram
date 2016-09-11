@@ -946,32 +946,6 @@ var database={ // а вы тоже храните базы данных в об�
 		budget:{spent:11000000,gross:553171},
 		rating:{imdb:8.11,kp:7.77},
 		status:false
-	},
-	e70:{
-		title:'',
-		subtitle:'',
-		description:'',
-		poster:'.jpg',
-		year:2016,out:true,
-		duration:,
-		genre:['horror','thriller'],
-		country:{flag:'',name:''},
-		budget:{spent:0,gross:0},
-		rating:{imdb:,kp:},
-		status:false
-	},
-	e70:{
-		title:'',
-		subtitle:'',
-		description:'',
-		poster:'.jpg',
-		year:2016,out:true,
-		duration:,
-		genre:['horror','thriller'],
-		country:{flag:'',name:''},
-		budget:{spent:0,gross:0},
-		rating:{imdb:,kp:},
-		status:false
 	}
 	/*
 	e6:{
