@@ -19,6 +19,8 @@ Array.prototype.remove=function(index){ if(index>=0 && index<this.length) this.s
 */
 var reset={total:0,shown:0,current:[],tag:'',searching:false};
 var options={
+	debug:1,
+	theme:0,
 	limit:12,
 	index:Object.keys(database),
 	total:0,
@@ -26,7 +28,18 @@ var options={
 	current:[],
 	tag:'',
 	ellipsis:{F:22,S:33},
+	random:1,
 	searching:false,
+	searchmode:0,
+	radio:0,
+	customize:{ /* defaults */
+		optLimit:16,
+		optTheme:0,
+		optSearch:0,
+		optRandom:12,
+		optRadio:0,
+		optDebug:1
+	},
 	tags:{
 		horror:{title:'Крипота',count:0,tagname:'ужастик'},
 		thriller:{title:'Напрячь нервы',count:0,tagname:'триллер'},
@@ -59,7 +72,8 @@ var DOM={
 	moar:'moar',
 	reset:'reset',
 	quote:'quote',
-	search:'search',ksearch:'keywords'
+	search:'search',ksearch:'keywords',
+	options:'options',optsaved:'optSaved',opterror:'optError'
 };
 document.addEventListener('mouseout',function(event){ event.preventDefault(); });
 document.addEventListener('DOMContentLoaded',function(){
@@ -76,19 +90,89 @@ document.addEventListener('DOMContentLoaded',function(){
 	}
 
 	DOM.feedback.onclick=function(){ window.open("https://anon.fm/feedback/","win1feedback","top=400,left=250,width=560,height=235,toolbar=no"); };
-	DOM.random.onclick=function(){ _reset(); _show(_random()); options.shown=1; _interact(); _count(1,options.total); };
+	DOM.random.onclick=function(){
+		_reset();
+		for(var i=0;i<options.random;i++){ _show(_random()); }
+		options.shown=options.random;
+		_interact();
+		_count(options.random,options.total);
+	};
 	DOM.moar.onclick=function(){ _load(); };
 	DOM.reset.onclick=function(){ _reset(); _load(); };
 	DOM.quote.onclick=function(){ _quote(); };
 	DOM.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
 
+	_apply('#optionlist input',function(element){
+		element.onkeydown=function(event){
+			if(event.keyCode==13){
+				if(!/\d+/.test(element.value) || parseInt(element.value)<0){
+					DOM.opterror.reveal();
+					setTimeout(function(){ DOM.opterror.cloak(); },2000);
+					return false;
+				}
+				if(options.customize.hasOwnProperty(element.name)) options.customize[element.name]=JSON.parse(element.value);
+				_opt_save(); _opt_apply();
+				DOM.optsaved.reveal();
+				setTimeout(function(){ DOM.optsaved.cloak(); },2000);
+			}
+		};
+	});
+	_apply('#optionlist select',function(element){
+		element.onchange=function(event){
+			if(options.customize.hasOwnProperty(element.name)) options.customize[element.name]=element.selectedIndex;
+			_opt_save(); _opt_apply();
+			DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000);
+		};
+	});
+
+	_opt_load();
+	_opt_show();
 	_load();
 	_quote();
 },false);
+function _opt_load(){
+	var S=localStorage.getItem('customize');
+	if(!S) _opt_save();
+	else {
+		var O=JSON.parse(S); if(!O){ _error('Ошибка при загрузке настроек.','Unable to load options @ _opt_load()'); return false; }
+		for(var o in O) if(options.customize.hasOwnProperty(o) && O[o]!==undefined){ options.customize[o]=O[o]; }
+		_opt_apply();
+	}
+}
+function _opt_save(){ localStorage.setItem('customize',JSON.stringify(options.customize)); }
+function _opt_apply(){
+	options.limit=options.customize.optLimit;
+	if(options.theme!=options.customize.optTheme){
+		options.theme=options.customize.optTheme;
+		var th=_create('link');
+			th.rel="stylesheet";
+			th.type="text/css";
+			th.media="screen";
+			th.href=options.theme?"res/dark.css":"res/light.css";
+		document.head.appendChild(th);
+		var exist=document.head.querySelector('link[href="res/'+options.theme?"light.css":"dark.css"+'"]');
+		if(exist) document.head.removeChild(exist);
+	}
+	options.searchmode=options.customize.optSearch;
+	options.random=options.customize.optRandom;
+	options.radio=options.customize.optRadio;
+	options.debug=options.customize.optDebug;
+	_opt_show();
+}
+function _opt_show(){
+	var D;
+	for(var o in options.customize){
+		D=DOM.options.querySelector('[name="'+o+'"]');
+		if(D){
+			if(D.nodeName=='SELECT') D.selectedIndex=options.customize[o];
+			else D.value=options.customize[o];
+		}
+	}
+}
 function _loading(is){ if(is) DOM.loading.reveal(); else DOM.loading.cloak(); return true; }
 function _error(){
-	console.log('\t[RAMP] /!\\ '+arguments[0]+(arguments[1]?' <'+arguments[1]+'>':''));
-	DOM.error.innerHTML=/*DOM.error.innerHTML+*/arguments[0]+(arguments[1]?' &lt;'+arguments[1]+'&gt;<br/>':'<br/>');
+	console.log('\t[RAMP] /!\\ '+arguments[0]+(options.debug&&arguments[1]?' <'+arguments[1]+'>':''));
+	DOM.error.innerHTML=/*DOM.error.innerHTML+*/arguments[0]+(options.debug&&arguments[1]?' &lt;'+arguments[1]+'&gt;<br/>':'<br/>');
 	DOM.error.reveal();
 }
 function _random(list){ return Object.keys(database)[(Math.random()*options.total)<<0]; }
@@ -121,7 +205,9 @@ function _load(tag){
 	var go=new Promise(function(resolve,reject){ // здесь мы только выводим кусок options.current (считая с начала и с лимитом options.limit)
 		if(options.current.length==0){ reject(); return false; }
 		var entry='';
-		var j=options.limit; if(j>=options.current.length) j=options.current.length;
+		var j=options.limit;
+			if(j==0) j=options.index.length;
+			if(j>=options.current.length) j=options.current.length;
 		for(var i=0; i<j; i++){
 			entry=(Math.random()*options.current.length)<<0;
 			if(!_show(options.current[entry])){ reject(); return false; }
@@ -142,16 +228,31 @@ function _search(keywords){
 	if(list.length==0) return false;
 	_reset();
 	options.searching=true;
-	list.forEach(function(keyword){
-		options.index.forEach(function(element,index){
-			if(!(database[element].genre.indexOf(keyword)>=0 ||
-				 database[element].description.indexOf(keyword)>=0 ||
-				 database[element].title.indexOf(keyword)>=0 ||
-				 database[element].subtitle.indexOf(keyword)>=0 ||
-				 database[element].country.name.indexOf(keyword)>=0
-			)){ options.current.remove(options.current.indexOf(element)); }
+	if(options.searchmode){ // conjunctive: one is enough
+		options.current=[];
+		list.forEach(function(keyword){
+			options.index.forEach(function(element,index){
+				if(database[element].genre.indexOf(keyword)>=0 ||
+					database[element].description.indexOf(keyword)>=0 ||
+					database[element].title.indexOf(keyword)>=0 ||
+					database[element].subtitle.indexOf(keyword)>=0 ||
+					database[element].country.name.indexOf(keyword)>=0
+				){ if(options.current.indexOf(element)<0) options.current.push(element); }
+			});
 		});
-	});
+	}
+	else { // disjunctive: reducing results step by step
+		list.forEach(function(keyword){
+			options.index.forEach(function(element,index){
+				if(!(database[element].genre.indexOf(keyword)>=0 ||
+					 database[element].description.indexOf(keyword)>=0 ||
+					 database[element].title.indexOf(keyword)>=0 ||
+					 database[element].subtitle.indexOf(keyword)>=0 ||
+					 database[element].country.name.indexOf(keyword)>=0
+				)){ options.current.remove(options.current.indexOf(element)); }
+			});
+		});
+	}
 	if(options.current.length==0) _error('Ничего не найдено.');
 	else _load();
 }
@@ -277,7 +378,7 @@ function _show(id){
 	return true;
 }
 var quotes=[
-	'Мы доставляем',
+	'Мы доставляем!',
 	'Жарко, как на Масленице!',
 	'Нам нужен микрокислород',
 	'Настало время переплыть Ла-Манш',
@@ -330,6 +431,38 @@ var quotes=[
 	'Ромио! Ромио! Ромио!',
 	'ПРОГОНДОНЕНО! СЕКАТОРОМ',
 	'Yeah, it is the right position!',
+	'Не забывайте закрывать портал в ад!',
+	'Пятилетку - за 4 года, таймгет - за марафон!',
+	'FINAL VITYAN',
+	'Куклоедам - колбасы iз Шинкою',
+	'Эй, Кагами, кверху ногами!',
+	'Ваш личный Шизариум',
+	'ИНЖАЛИД ЕГГОГ',
+	'А вы и не против',
+	'Тут-то жопа ваша жирная и зачесалась',
+	'[autism intensifies]',
+	'101010',
+	'ОO0 Bekтоp',
+	'Как долететь до Нептуна за один марафон',
+	'Хуяк, хуяк. Хуяк, хуяк. Сука блять',
+	'Эй, парень, не хочешь обратно попрограммировать?',
+	'Очень весело общаться в ассоциации молодых христиан! Иди, общайся с парнями!',
+	'Мы стоим вдвоём под золотым дождём!',
+	'Bitte schnelle zu Regata nach Duisburg.',
+	'Прогондоненный вибротон',
+	'Диплодоки в Белграде',
+	'Хариус Судзумия из Воронежа',
+	'НИ ЕДИНОГО РАЗРЫВА!',
+	'Кодолион: Вы (не) пьяны',
+	'Называюсь я... Вибро...',
+	'Добавьте соль. Разденьте рыбу.',
+	'Малинки, такие вечеринки',
+	'Всё будет хорошо.',
+	'А у меня есть паааааааасека...',
+	'Ну, а вообще, как дела?',
+	'RAMP этого не умеет, напиши скрипт сделаю.',
+	'Хеймен!',
+	'Это как магазин телевизоров, ну вы поняли.'
 ];
 function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0]; }
 
@@ -345,4 +478,5 @@ function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0];
 - Planning magnetlinks realization
 - Planning counter improvement
 - Planning `done` section
+- Planning videostream
 */

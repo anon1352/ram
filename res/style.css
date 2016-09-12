@@ -63,7 +63,7 @@ main {
 nav {
 	list-style: none;
 	color: #ccc;
-	width: 100%; height: 256px;
+	width: 100%; height: 240px;
 }
 nav li {
 	display: block;
@@ -82,62 +82,7 @@ nav li i {
 	vertical-align: top;
 }
 nav > li:hover { background: #583d55; }
-nav label {
-	display: block;
-	cursor: pointer;
-}
-nav input[type="checkbox"] { display: none; }
-nav input[type="checkbox"] ~ ul {
-	display: block;
-	position: fixed;
-	top: 0; left: 200px;
-	height: 100%;
-	background: #0b0b0e;
-	padding: 0;
-	width: 200px;
-	z-index: 9;
-	cursor: default;
-	visibility: hidden;
-	opacity: 0;
-}
-nav input[type="checkbox"]:checked ~ ul,
-nav li:hover > ul { left:200px; visibility: visible; opacity: 1; }
-nav li ul li {
-	display: block;
-	list-style: none;
-	vertical-align: top;
-	text-transform: none;
-	font-size: 8pt;
-	text-align: left;
-	line-height: 20px;
-	width: 200px;
-	padding: 5px 0;
-	box-sizing: border-box;
-}
-nav li ul li:hover { background: #583d55; }
-nav li ul li span {
-	width: 30px;
-	display: inline-block;
-	text-align: center;
-	color: white;
-	background: #111217;
-	font-weight: normal;
-}
-nav li ul li:hover span { opacity: 1; }
-nav input {
-	display: inline;
-	border: none;
-	outline: none;
-	width: 160px;
-	line-height: 30px;
-	padding: 0;
-	color: #ccc; background: transparent;
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-size: 8pt;
-	letter-spacing: 1px;
-}
-nav input:focus, nav input:focus ~ i { background: #583d55; }
-nav input ~ i { float: left; }
+
 
 footer {
 	padding: 20px;
@@ -262,19 +207,15 @@ article .full > div > div {
 }
 
 button {
-	margin: 10px auto;
+	display: block;
+	margin: 10px auto; padding: 0 10px;
+	color: #ccc; background: #111217;
+	letter-spacing: 1px;
+	font: bold 9pt/30px "Helvetica Neue", Helvetica, sans-serif;
+	border: none;
 	cursor: pointer;
-	background: #eee;
-	border: 1px solid #ccc;
-	padding: 5px 10px;
-	border-radius: 2px;
-	outline: none;
 }
-button:hover {
-	background: #f2f2f2;
-	border-color: #aaa;
-	box-shadow: 0 0 4px #dfdfdf;
-}
+button:hover { background: #583d55; }
 
 .full .full-poster {
 	float: left;
@@ -374,12 +315,12 @@ button:hover {
 
 #logo {
 	display: block;
-	background: url(ra512.png) center center / 64px 64px no-repeat transparent;
-	width: 64px;
-	height: 64px;
+	background: url(ra128.png) center center / 128px 128px no-repeat transparent;
+	width: 128px;
+	height: 128px;
 	margin: 20px auto;
-	border-radius: 128px;
-	border: 3px solid white;
+	/*border-radius: 128px;*/
+	/*border: 3px solid white;*/
 }
 #content {
 	min-height: 70%;
@@ -421,6 +362,120 @@ button:hover {
 }
 #moar { display: none; }
 
+#options { position: relative; }
+#tags label,
+#options label {
+	display: block;
+	cursor: pointer;
+}
+#options > span {
+	display: none;
+	position: absolute;
+	top: 0; right: 10px;
+	float: right;
+	/*color: #996793;*/
+	color: #ccc;
+	font-weight: bold;
+}
+#tags input[type="checkbox"], #options input[type="checkbox"] { display: none; }
+#tags input[type="checkbox"] ~ ul {
+	display: block;
+	position: fixed;
+	top: 0; left: 200px;
+	height: 100%;
+	background: #0b0b0e;
+	padding: 0;
+	width: 200px;
+	z-index: 9;
+	cursor: default;
+	visibility: hidden;
+	opacity: 0;
+}
+#options input[type="checkbox"] ~ ul {
+	display: block;
+	position: fixed;
+	top: 238px; left: 200px;
+	padding: 3px 0;
+	width: 500px; height: 210px;
+	background: #0b0b0e;
+	cursor: default;
+	box-sizing: border-box;
+	z-index: 9;
+	visibility: hidden;
+	opacity: 0;
+}
+#options input[type="checkbox"]:checked ~ ul,
+#tags input[type="checkbox"]:checked ~ ul,
+#tags:hover > ul { left:200px; visibility: visible!important; opacity: 1!important; }
+#tags ul li {
+	display: block;
+	list-style: none;
+	vertical-align: top;
+	text-transform: none;
+	font-size: 8pt;
+	text-align: left;
+	line-height: 20px;
+	width: 200px;
+	padding: 5px 0;
+	box-sizing: border-box;
+}
+#options ul li {
+	display: block;
+	list-style: none;
+	vertical-align: top;
+	text-transform: none;
+	font-size: 8pt;
+	text-align: left;
+	line-height: 20px;
+	padding: 2px 0;
+	box-sizing: border-box;
+	cursor: default;
+}
+#tags ul li:hover, #options ul li:hover { background: #583d55; }
+#tags ul li span {
+	width: 30px;
+	display: inline-block;
+	text-align: center;
+	color: white;
+	background: #111217;
+	font-weight: normal;
+}
+#tags ul li:hover span { opacity: 1; }
+#options ul li span {
+	display: inline-block;
+	width: 210px;
+	text-align: right;
+	padding: 0 20px;
+	box-sizing: border-box;
+	vertical-align: middle;
+}
+#options ul li input,
+#options ul li select {
+	display: inline-block;
+	padding: 0 10px;
+	width: 290px; height: 30px;
+	color: #aaa; background: #15151b;
+	line-height: 30px;
+	border: none;
+	box-sizing: border-box;
+}
+
+#search input {
+	display: inline;
+	border: none;
+	outline: none;
+	width: 160px;
+	line-height: 30px;
+	padding: 0;
+	color: #ccc; background: transparent;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 8pt;
+	letter-spacing: 1px;
+}
+#search input:focus, #search input:focus ~ i { background: #583d55; }
+#search input ~ i { float: left; }
+
+#options input {}
 
 
 
