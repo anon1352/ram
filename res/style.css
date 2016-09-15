@@ -156,7 +156,7 @@ article .title {
 article .description:before { content:'Описание: '; color:#999; }
 article .description {
 	position: absolute;
-	bottom: 21px;
+	bottom: 20px;
 	width: 100%; height: 64px;
 	color: #ccc; background: rgba(17,18,23,0.9);
 	padding: 5px;
@@ -180,7 +180,6 @@ article .full {
 	font-size: 8pt;
 	line-height: 20px;
 	letter-spacing: 1px;
-	border-top: 1px dashed #753f6e;
 }
 article .full:hover { background: #753f6e; }
 [data-toggle="false"] > div { visibility: hidden; opacity: 0; }
@@ -204,6 +203,7 @@ article .full > div > div {
 	box-sizing: border-box;
 	box-shadow: 0 0 32px #333;
 	z-index: 9;
+	overflow: auto;
 }
 
 button {
@@ -267,6 +267,7 @@ button:hover { background: #583d55; }
 .full-genre:before { content:'Жанры'; }
 .full-genre {}
 .full-genre kbd {
+	display: inline-block;
 	color: dodgerblue;
 	text-decoration: underline;
 	cursor: pointer;
@@ -319,8 +320,7 @@ button:hover { background: #583d55; }
 	width: 128px;
 	height: 128px;
 	margin: 20px auto;
-	/*border-radius: 128px;*/
-	/*border: 3px solid white;*/
+	cursor: pointer;
 }
 #content {
 	min-height: 70%;

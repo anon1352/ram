@@ -41,27 +41,50 @@ var options={
 		optDebug:1
 	},
 	tags:{
-		horror:{title:'Крипота',count:0,tagname:'ужастик'},
-		thriller:{title:'Напрячь нервы',count:0,tagname:'триллер'},
-		mystic:{title:'Рептилоиды',count:0,tagname:'мистика'},
-		fantasy:{title:'Гномы и эльфы',count:0,tagname:'фентези'},
-		scifi:{title:'Научно-популярное',count:0,tagname:'научпоп'},
-		adventure:{title:'Приключения',count:0,tagname:'приключения'},
-		detective:{title:'Острый сюжет',count:0,tagname:'детектив'},
-		good:{title:'Доброта',count:0,tagname:'повседневность'},
-		drama:{title:'Трагедия',count:0,tagname:'драма'},
-		comedy:{title:'Комедия',count:0,tagname:'комедия'},
-		anime:{title:'Мультфильмы',count:0,tagname:'анимационный'},
-		soviet:{title:'Советское',count:0,tagname:'СССР'},
-		wtf:{title:'Арт-хаус',count:0,tagname:'арт-хаус'},
-		documentary:{title:'Документальное',count:0,tagname:'документальный'},
-		action:{title:'Экшон',count:0,tagname:'боевик'},
-		series:{title:'Сериалы',count:0,tagname:'сериал'},
-		criminal:{title:'Улицы разбитых блинов',count:0,tagname:'криминал'},
-		coolstory:{title:'Охуительные истории',count:0,tagname:'охуительные истории'}
+		horror:{count:0,title:'Крипота',tagname:'ужастик'},
+		thriller:{count:0,title:'Напрячь нервы',tagname:'триллер'},
+		mystic:{count:0,title:'Рептилоиды',tagname:'мистика'},
+		fantasy:{count:0,title:'Гномы и эльфы',tagname:'фентези'},
+		scifi:{count:0,title:'Научно-популярное',tagname:'научпоп'},
+		adventure:{count:0,title:'Приключения',tagname:'приключения'},
+		detective:{count:0,title:'Острый сюжет',tagname:'детектив'},
+		good:{count:0,title:'Доброта',tagname:'повседневность'},
+		drama:{count:0,title:'Трагедия',tagname:'драма'},
+		comedy:{count:0,title:'Комедия',tagname:'комедия'},
+		animated:{count:0,title:'Мультфильмы',tagname:'анимационный'},
+		soviet:{count:0,title:'Советское',tagname:'СССР'},
+		arthouse:{count:0,title:'Арт-хаус',tagname:'арт-хаус'},
+		documentary:{count:0,title:'Документальное',tagname:'документальный'},
+		action:{count:0,title:'Экшон',tagname:'боевик'},
+		series:{count:0,title:'Сериалы',tagname:'сериал'},
+		criminal:{count:0,title:'Улицы разбитых блинов',tagname:'криминал'},
+		coolstory:{count:0,title:'Охуительные истории',tagname:'охуительные истории'},
+		short:{count:0,title:'Короткометражное',tagname:'короткометражка'}
+	},
+	countries:{
+		'ru':'Россия',
+		'jp':'Япония',
+		'be':'Бельгия',
+		'de':'Германия',
+		'fr':'Франция',
+		'nl':'Нидерланды',
+		'us':'США',
+		'ua':'Украина',
+		'gb':'Великая Британия',
+		'se':'Швеция',
+		'tw':'Тайвань',
+		'ca':'Канада',
+		'kr':'Южная Корея',
+		'cn':'Китай',
+		'pl':'Польша',
+		'au':'Австралия',
+		'ch':'Швейцария',
+		'cz':'Чехия / Чехословакия',
+		'ussr':'СССР'
 	}
 };
 var DOM={
+	logo:'logo',
 	list:'list',
 	counter:'counter',
 	feedback:'feedback',
@@ -89,6 +112,7 @@ document.addEventListener('DOMContentLoaded',function(){
 		DOM.tags.appendChild(li);
 	}
 
+	DOM.logo.onclick=function(){ _reset(); _load(); };
 	DOM.feedback.onclick=function(){ window.open("https://anon.fm/feedback/","win1feedback","top=400,left=250,width=560,height=235,toolbar=no"); };
 	DOM.random.onclick=function(){
 		_reset();
@@ -352,7 +376,7 @@ function _show(id){
 						data.genre.forEach(function(element,index){ F_genre.innerHTML+='<kbd class="tag" data-tag="'+element+'">'+(options.tags[element]?options.tags[element].tagname:'?')+'</kbd>&nbsp;'; });
 						F_genre.classList.add('full-genre');
 					var F_country=_create('div');
-						F_country.innerHTML="<span class='flag flag-"+data.country.flag+"'>"+data.country.name+"</span>";
+						F_country.innerHTML="<span class='flag flag-"+data.country+"'>"+options.countries[data.country]+"</span>";
 						F_country.classList.add('full-country');
 					var F_budget=_create('div');
 						F_budget.innerHTML=(data.out===true?( (data.budget.spent?'$'+data.budget.spent:'Бутылка 777')+' / '+(data.budget.gross?'$'+data.budget.gross:(data.budget.spent?'дырка от бублика':'(опустевшая)'))+((data.budget.spent<=data.budget.gross)?' (взлетел)':' (провалился)') ):'(ещё не вышел)');
