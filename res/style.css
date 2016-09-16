@@ -48,6 +48,27 @@ body {
 	overflow: hidden;
 	font:11pt/1.1 "Helvetica Neue", Helvetica, sans-serif;
 }
+a,a:visited {
+	color: #996793;
+	text-decoration: none;
+}
+a:hover {
+	color: #996793;
+	text-decoration: none;
+}
+a[href^="http://"]:after,
+a[href^="https://"]:after,
+a[href^="ftp://"]:after {
+	content: '\f08e';
+	display: inline-block;
+	padding-left: 3px;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	opacity: .5;
+}
 main {
 	position: fixed;
 	display: inline-block;
@@ -90,14 +111,23 @@ footer {
 	border-top: 1px solid #ccc;
 	color: #555;
 	text-align: center;
-	text-transform: uppercase;
 	font-size: 9pt;
 	line-height: 15px;
 	letter-spacing: 1px;
 	border: 1px solid #ccc;
 }
-footer > div:first-child { font-weight: bold; }
-footer > div:last-child { font-size:8pt; color:#999; }
+footer > div:first-child { font-style: italic; }
+footer > div:last-child { font-size:8pt; color:#777; }
+footer a { padding:0 10px; }
+footer + div {
+	text-align: center;
+	line-height: 1.5;
+	font-size: 8pt;
+	letter-spacing: 1px;
+	color: #999;
+	margin-top: 10px;
+}
+
 header {
 	display: inline-block;
 	background: #111217;
@@ -219,9 +249,9 @@ button:hover { background: #583d55; }
 
 .full .full-poster {
 	float: left;
-	width: 200px; height: 300px;
+	width: 200px; height: 270px;
 	background-position: 0 0;
-	background-size: 200px 300px;
+	background-size: 200px 270px;
 	margin-right: 20px;
 	border: 1px solid #111;
 	box-sizing: border-box;
@@ -396,7 +426,7 @@ button:hover { background: #583d55; }
 	position: fixed;
 	top: 238px; left: 200px;
 	padding: 3px 0;
-	width: 500px; height: 210px;
+	width: 500px; height: 240px;
 	background: #0b0b0e;
 	cursor: default;
 	box-sizing: border-box;
@@ -449,6 +479,12 @@ button:hover { background: #583d55; }
 	box-sizing: border-box;
 	vertical-align: middle;
 }
+/*#options ul li:last-child span {
+	line-height: 30px;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}*/
 #options ul li input,
 #options ul li select {
 	display: inline-block;

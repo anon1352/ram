@@ -79,6 +79,7 @@ var options={
 		'pl':'Польша',
 		'au':'Австралия',
 		'ch':'Швейцария',
+		'ro':'Румыния',
 		'cz':'Чехия / Чехословакия',
 		'ussr':'СССР'
 	}
@@ -96,7 +97,7 @@ var DOM={
 	reset:'reset',
 	quote:'quote',
 	search:'search',ksearch:'keywords',
-	options:'options',optsaved:'optSaved',opterror:'optError'
+	options:'options',/*optsave:'optSave',*/optsaved:'optSaved',opterror:'optError'
 };
 document.addEventListener('mouseout',function(event){ event.preventDefault(); });
 document.addEventListener('DOMContentLoaded',function(){
@@ -125,6 +126,7 @@ document.addEventListener('DOMContentLoaded',function(){
 	DOM.reset.onclick=function(){ _reset(); _load(); };
 	DOM.quote.onclick=function(){ _quote(); };
 	DOM.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
+	//DOM.optsave.onclick=function(){ _opt_save(); _opt_apply(); DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000); };
 
 	_apply('#optionlist input',function(element){
 		element.onkeydown=function(event){
@@ -298,6 +300,14 @@ function _ellipsis(text){ // ВСЁ ОЧЕНЬ ХУЁВО
 	return subtext;
 }
 function _ending(num){ // А ЗДЕСЬ ЕЩЁ ХУЁВЕЙ
+	switch(num%100){
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+			return ' фильмов';
+		default:break;
+	}
 	switch(num%10){
 		case 0:
 		case 5:
@@ -384,10 +394,12 @@ function _show(id){
 					var F_rating=_create('div');
 						F_rating.classList.add('full-rating');
 						var F_rating_imdb=_create('cite');
-							F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+data.rating.imdb+"</span>";
+							if((data.rating.imdb|0)==0) F_rating_imdb.innerHTML='<span>(?)</span>';
+							else F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+data.rating.imdb+"</span>";
 							F_rating_imdb.classList.add('rating','imdb');
 						var F_rating_kp=_create('cite');
-							F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp+"</span>";
+							if((data.rating.kp|0)==0) F_rating_kp.innerHTML='<span>(?)</span>';
+							else F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp+"</span>";
 							F_rating_kp.classList.add('rating','kinopoisk');
 						F_rating.appendChilds(F_rating_imdb,F_rating_kp);
 					var F_desc=_create('div');
