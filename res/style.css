@@ -229,7 +229,7 @@ article .full > div > div {
 	background: white; color: #333;
 	text-align: left;
 	text-shadow: none;
-	border: 1px solid #777;
+	border: 1px solid #111;
 	box-sizing: border-box;
 	box-shadow: 0 0 32px #333;
 	z-index: 9;
@@ -425,8 +425,8 @@ button:hover { background: #583d55; }
 	display: block;
 	position: fixed;
 	top: 238px; left: 200px;
-	padding: 3px 0;
-	width: 500px; height: 240px;
+	padding: 0;
+	width: 432px; height: 240px;
 	background: #0b0b0e;
 	cursor: default;
 	box-sizing: border-box;
@@ -457,7 +457,7 @@ button:hover { background: #583d55; }
 	font-size: 8pt;
 	text-align: left;
 	line-height: 20px;
-	padding: 2px 0;
+	padding: 1px;
 	box-sizing: border-box;
 	cursor: default;
 }
@@ -473,7 +473,7 @@ button:hover { background: #583d55; }
 #tags ul li:hover span { opacity: 1; }
 #options ul li span {
 	display: inline-block;
-	width: 210px;
+	width: 140px;
 	text-align: right;
 	padding: 0 20px;
 	box-sizing: border-box;
