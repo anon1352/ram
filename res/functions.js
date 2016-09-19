@@ -75,12 +75,15 @@ var options={
 		'tw':'Тайвань',
 		'ca':'Канада',
 		'kr':'Южная Корея',
+		'kp':'КНДР',
 		'cn':'Китай',
 		'pl':'Польша',
 		'au':'Австралия',
 		'ch':'Швейцария',
 		'ro':'Румыния',
-		'cz':'Чехия / Чехословакия',
+		'fi':'Финляндия',
+		'lv':'Латвия',
+		'cz':'Чехия',
 		'ussr':'СССР'
 	}
 };
@@ -261,8 +264,7 @@ function _search(keywords){
 				if(database[element].genre.indexOf(keyword)>=0 ||
 					database[element].description.indexOf(keyword)>=0 ||
 					database[element].title.indexOf(keyword)>=0 ||
-					database[element].subtitle.indexOf(keyword)>=0 ||
-					database[element].country.name.indexOf(keyword)>=0
+					database[element].subtitle.indexOf(keyword)>=0
 				){ if(options.current.indexOf(element)<0) options.current.push(element); }
 			});
 		});
@@ -273,8 +275,7 @@ function _search(keywords){
 				if(!(database[element].genre.indexOf(keyword)>=0 ||
 					 database[element].description.indexOf(keyword)>=0 ||
 					 database[element].title.indexOf(keyword)>=0 ||
-					 database[element].subtitle.indexOf(keyword)>=0 ||
-					 database[element].country.name.indexOf(keyword)>=0
+					 database[element].subtitle.indexOf(keyword)>=0
 				)){ options.current.remove(options.current.indexOf(element)); }
 			});
 		});
@@ -385,8 +386,10 @@ function _show(id){
 					var F_genre=_create('div');
 						data.genre.forEach(function(element,index){ F_genre.innerHTML+='<kbd class="tag" data-tag="'+element+'">'+(options.tags[element]?options.tags[element].tagname:'?')+'</kbd>&nbsp;'; });
 						F_genre.classList.add('full-genre');
-					var F_country=_create('div');
-						F_country.innerHTML="<span class='flag flag-"+data.country+"'>"+options.countries[data.country]+"</span>";
+					var F_country=_create('div'), F_country_fl=data.country.split('|');
+						F_country.innerHTML='';
+						if(F_country_fl) for(var f=0; f<F_country_fl.length; ++f)
+							F_country.innerHTML+="<span class='flag flag-"+F_country_fl[f]+"'>"+options.countries[F_country_fl[f]]+"</span>";
 						F_country.classList.add('full-country');
 					var F_budget=_create('div');
 						F_budget.innerHTML=(data.out===true?( (data.budget.spent?'$'+data.budget.spent:'Бутылка 777')+' / '+(data.budget.gross?'$'+data.budget.gross:(data.budget.spent?'дырка от бублика':'(опустевшая)'))+((data.budget.spent<=data.budget.gross)?' (взлетел)':' (провалился)') ):'(ещё не вышел)');

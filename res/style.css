@@ -224,7 +224,7 @@ article .full > div {
 	z-index: 9;
 }
 article .full > div > div {
-	width: 700px; height: 80%;
+	width: 800px; height: 80%;
 	margin: 5% auto 5% auto; padding: 20px;
 	background: white; color: #333;
 	text-align: left;
@@ -536,6 +536,7 @@ button:hover { background: #583d55; }
 	-moz-backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
 }
+.flag { margin-right: 10px; }
 .flag:before {
 	content: ' ';
 	display: inline-block;
