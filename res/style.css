@@ -99,6 +99,7 @@ nav li {
 nav li i {
 	width: 40px;
 	text-align: center;
+	font-size:14px!important;
 	line-height: 30px!important;
 	vertical-align: top;
 }

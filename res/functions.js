@@ -59,12 +59,16 @@ var options={
 		series:{count:0,title:'Сериалы',tagname:'сериал'},
 		criminal:{count:0,title:'Улицы разбитых блинов',tagname:'криминал'},
 		coolstory:{count:0,title:'Охуительные истории',tagname:'охуительные истории'},
-		short:{count:0,title:'Короткометражное',tagname:'короткометражка'}
+		short:{count:0,title:'Короткометражное',tagname:'короткометражка'},
+		erotic:{count:0,title:'Эротика',tagname:'эротика'}
 	},
 	countries:{
 		'ru':'Россия',
 		'jp':'Япония',
 		'be':'Бельгия',
+		'by':'Беларусь',
+		'es':'Испания',
+		'it':'Италия',
 		'de':'Германия',
 		'fr':'Франция',
 		'nl':'Нидерланды',
@@ -100,11 +104,13 @@ var DOM={
 	reset:'reset',
 	quote:'quote',
 	search:'search',ksearch:'keywords',
+	api:{},
 	options:'options',/*optsave:'optSave',*/optsaved:'optSaved',opterror:'optError'
 };
 document.addEventListener('mouseout',function(event){ event.preventDefault(); });
 document.addEventListener('DOMContentLoaded',function(){
 	options.total=options.index.length;
+	options.api=location.hash.substring(1).split('&');
 	for(var element in DOM){ DOM[element]=_id(DOM[element]); }
 	for(var E in database){ database[E].genre.forEach(function(element,index){ options.tags[element].count++; }); }
 	for(var T in options.tags){
@@ -153,12 +159,51 @@ document.addEventListener('DOMContentLoaded',function(){
 			DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000);
 		};
 	});
+	_apply('.dynamic-link',function(element){
+		element.onclick=function(event){
+			event.preventDefault();
+			ajax(element.href,'get',null,null,
+				function(success){ DOM.list.innerHTML=success; },
+				function(error){ console.log(error); }
+			);
+		};
+	});
 
 	_opt_load();
 	_opt_show();
-	_load();
+	if(options.dsearch){ _search(decodeURIComponent(options.dsearch)); options.dsearch=''; } else _load();
 	_quote();
 },false);
+function createXMLHTTPObject() {
+	var XMLHttpFactories=[
+		function(){return new XMLHttpRequest();},
+		function(){return new ActiveXObject("Msxml2.XMLHTTP");},
+		function(){return new ActiveXObject("Msxml3.XMLHTTP");},
+		function(){return new ActiveXObject("Microsoft.XMLHTTP");}
+	];
+	var xmlhttp=false;
+	for(var i=0;i<XMLHttpFactories.length;i++) { try { xmlhttp = XMLHttpFactories[i](); } catch (e) { continue; } break; }
+	return xmlhttp;
+}
+function ajax_success(data){ console.log(data); }
+function ajax_error(xhr,status){ console.log('HTTP '+xhr+' '+status); }
+function ajax_pending(state){ if(state) console.log('ajax state opened'); else console.log('ajax state closed'); }
+function ajax(url,method,data,headers,success,error) {
+	if(!data && method=='POST') return false;
+	if(!(req=createXMLHTTPObject())) return false;
+	if(typeof success!='function') success=ajax_success;
+	if(typeof error!='function') error=ajax_success;
+	req.open(method,url,true); // true for async
+	if(!!headers) for(var i in headers) req.setRequestHeader(i, headers[i]);
+	req.send(data);
+	req.onreadystatechange=function(){
+		if(req.readyState==4){
+			if(req.status==200 || req.status==304) success(req.responseText,req.getResponseHeader('X-AJAX-Response'));
+			else error(req.status,req.statusText);
+		}
+	};
+	return req.responseText;
+}
 function _opt_load(){
 	var S=localStorage.getItem('customize');
 	if(!S) _opt_save();
@@ -396,15 +441,24 @@ function _show(id){
 						F_budget.classList.add('full-budget');
 					var F_rating=_create('div');
 						F_rating.classList.add('full-rating');
-						var F_rating_imdb=_create('cite');
-							if((data.rating.imdb|0)==0) F_rating_imdb.innerHTML='<span>(?)</span>';
-							else F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+data.rating.imdb+"</span>";
-							F_rating_imdb.classList.add('rating','imdb');
-						var F_rating_kp=_create('cite');
-							if((data.rating.kp|0)==0) F_rating_kp.innerHTML='<span>(?)</span>';
-							else F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp+"</span>";
-							F_rating_kp.classList.add('rating','kinopoisk');
-						F_rating.appendChilds(F_rating_imdb,F_rating_kp);
+						if(data.rating.mal===undefined){
+							var F_rating_imdb=_create('cite');
+								if((data.rating.imdb|0)==0) F_rating_imdb.innerHTML='<span>(?)</span>';
+								else F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+(data.rating.imdb+0.01)+"</span>";
+								F_rating_imdb.classList.add('rating','imdb');
+							var F_rating_kp=_create('cite');
+								if((data.rating.kp|0)==0) F_rating_kp.innerHTML='<span>(?)</span>';
+								else F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp+"</span>";
+								F_rating_kp.classList.add('rating','kinopoisk');
+							F_rating.appendChilds(F_rating_imdb,F_rating_kp);
+						}
+						else {
+							var F_rating_mal=_create('cite');
+								if((data.rating.mal|0)==0) F_rating_mal.innerHTML='<span>(?)</span>';
+								else F_rating_mal.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.mal*25+40)+","+parseInt(data.rating.mal*25-40)+",0)'>"+data.rating.mal+"</span>";
+								F_rating_mal.classList.add('rating','mal');
+							F_rating.appendChilds(F_rating_mal);
+						}
 					var F_desc=_create('div');
 						F_desc.innerHTML=data.description;
 						F_desc.classList.add('full-desc');
