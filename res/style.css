@@ -514,6 +514,30 @@ button:hover { background: #583d55; }
 
 #options input {}
 
+#page { text-align: left; }
+#page h3 {
+	margin: 0 0 30px 0; padding: 5px 0;
+	color: #333;
+	font-size: 24pt;
+	border-bottom: 2px solid #ccc;
+}
+#page h4 {
+	font-size: 16pt;
+	margin-top: 20px; padding: 10px;
+}
+#page p {
+	margin: 5px 0;
+	text-indent: 10px;
+	line-height: 1.2;
+}
+#page ul {
+	margin: 15px 20px;
+	list-style: disc inside;
+}
+#page ul li {
+	margin: 5px;
+	line-height: 1.2;
+}
 
 
 .noselect {
