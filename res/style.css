@@ -322,7 +322,8 @@ button:hover { background: #583d55; }
 	background: url(rating.gif) 0 0 / 100px 20px no-repeat transparent;
 }
 .rating.imdb:before { content:'IMDB:'; }
-.rating.kinopoisk:before { content:'Kinopoisk:' }
+.rating.kinopoisk:before { content:'Kinopoisk:'; }
+.rating.mal:before { content:'MAL:'; }
 .rating {
 	width: 100px;
 	margin-right: 15px;

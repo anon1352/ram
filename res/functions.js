@@ -88,6 +88,7 @@ var options={
 		'fi':'Финляндия',
 		'lv':'Латвия',
 		'cz':'Чехия',
+		'kz':'Казахстан',
 		'ussr':'СССР'
 	}
 };
@@ -306,15 +307,15 @@ function _search(keywords){
 		options.current=[];
 		list.forEach(function(keyword){
 			options.index.forEach(function(element,index){
-				if(database[element].genre.indexOf(keyword)>=0 ||
-					database[element].description.indexOf(keyword)>=0 ||
-					database[element].title.indexOf(keyword)>=0 ||
-					database[element].subtitle.indexOf(keyword)>=0
+				if(database[element].genre.indexOf(keyword)>=0
+				|| database[element].description.indexOf(keyword)>=0
+				|| database[element].title.indexOf(keyword)>=0
+				|| !!(function(){ var f=false; database[element].country.split('|').forEach(function(element){ if(options.countries[element]!==undefined && options.countries[element].indexOf(keyword)>=0) f=true; }); return f; })()
+				|| database[element].subtitle.indexOf(keyword)>=0
 				){ if(options.current.indexOf(element)<0) options.current.push(element); }
 			});
 		});
-	}
-	else { // disjunctive: reducing results step by step
+	} else { // disjunctive: reducing results step by step
 		list.forEach(function(keyword){
 			options.index.forEach(function(element,index){
 				if(!(database[element].genre.indexOf(keyword)>=0 ||
@@ -444,18 +445,18 @@ function _show(id){
 						if(data.rating.mal===undefined){
 							var F_rating_imdb=_create('cite');
 								if((data.rating.imdb|0)==0) F_rating_imdb.innerHTML='<span>(?)</span>';
-								else F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+(data.rating.imdb+0.01)+"</span>";
+								else F_rating_imdb.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.imdb*25+40)+","+parseInt(data.rating.imdb*25-40)+",0)'>"+data.rating.imdb.toFixed(2)+"</span>";
 								F_rating_imdb.classList.add('rating','imdb');
 							var F_rating_kp=_create('cite');
 								if((data.rating.kp|0)==0) F_rating_kp.innerHTML='<span>(?)</span>';
-								else F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp+"</span>";
+								else F_rating_kp.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.kp*25+40)+","+parseInt(data.rating.kp*25-40)+",0)'>"+data.rating.kp.toFixed(2)+"</span>";
 								F_rating_kp.classList.add('rating','kinopoisk');
 							F_rating.appendChilds(F_rating_imdb,F_rating_kp);
 						}
 						else {
 							var F_rating_mal=_create('cite');
 								if((data.rating.mal|0)==0) F_rating_mal.innerHTML='<span>(?)</span>';
-								else F_rating_mal.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.mal*25+40)+","+parseInt(data.rating.mal*25-40)+",0)'>"+data.rating.mal+"</span>";
+								else F_rating_mal.innerHTML="<span style='color:rgb("+parseInt(250-data.rating.mal*25+40)+","+parseInt(data.rating.mal*25-40)+",0)'>"+data.rating.mal.toFixed(2)+"</span>";
 								F_rating_mal.classList.add('rating','mal');
 							F_rating.appendChilds(F_rating_mal);
 						}
