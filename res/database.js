@@ -1645,7 +1645,7 @@ var database={ // а вы тоже храните базы данных в об�
 		duration:102,
 		genre:['drama','adventure'],
 		country:'kz',
-		budget:{spent:0,gross:0},
+		budget:{spent:800000,gross:0},
 		rating:{imdb:7.2,kp:7.82},
 		status:false
 	},
