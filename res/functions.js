@@ -303,7 +303,7 @@ function _search(keywords){
 	if(list.length==0) return false;
 	_reset();
 	options.searching=true;
-	if(options.searchmode){ // conjunctive: one is enough
+	if(options.searchmode==0){ // disjunction
 		options.current=[];
 		list.forEach(function(keyword){
 			options.index.forEach(function(element,index){
@@ -315,21 +315,23 @@ function _search(keywords){
 				){ if(options.current.indexOf(element)<0) options.current.push(element); }
 			});
 		});
-	} else { // disjunctive: reducing results step by step
+	}
+	else if(options.searchmode==1) { // conjunction
 		list.forEach(function(keyword){
 			options.index.forEach(function(element,index){
-				if(!(database[element].genre.indexOf(keyword)>=0 ||
-					 database[element].description.indexOf(keyword)>=0 ||
-					 database[element].title.indexOf(keyword)>=0 ||
-					 database[element].subtitle.indexOf(keyword)>=0
+				if(!(database[element].genre.indexOf(keyword)>=0
+				|| database[element].description.indexOf(keyword)>=0
+				|| database[element].title.indexOf(keyword)>=0
+				|| database[element].subtitle.indexOf(keyword)>=0
 				)){ options.current.remove(options.current.indexOf(element)); }
 			});
 		});
 	}
+	else _error('Не имплементировано.');
 	if(options.current.length==0) _error('Ничего не найдено.');
 	else _load();
 }
-function _count(i,total){ var C=_id('counter'),o=(i<total?i:total); C.innerHTML="Показано "+o+" "+_ending(o)+" из "+total; }
+function _count(i,total){ var C=_id('counter'),o=(i<total?i:total); C.innerHTML=_ending(o)+' из '+total; } //"Показано "+o+" "+_ending(o)+" из "+total
 function _ellipsis(text){ // ВСЁ ОЧЕНЬ ХУЁВО
 	var subtext=text.substring(0,170),cut=0,firstline=true,length=170,lines=0,iterator=0;
 	for(var position=0; position<length; position++){
@@ -352,7 +354,7 @@ function _ending(num){ // А ЗДЕСЬ ЕЩЁ ХУЁВЕЙ
 		case 12:
 		case 13:
 		case 14:
-			return ' фильмов';
+			return 'Показано '+num+' фильмов';
 		default:break;
 	}
 	switch(num%10){
@@ -362,14 +364,14 @@ function _ending(num){ // А ЗДЕСЬ ЕЩЁ ХУЁВЕЙ
 		case 7:
 		case 8:
 		case 9:
-			return 'фильмов';
+			return 'Показано '+num+' фильмов';
 		case 1:
-			return 'фильм';
+			return 'Показан '+num+' фильм';
 		case 2:
 		case 3:
 		case 4:
-			return 'фильма';
-		default:return 'кино';
+			return 'Показано '+num+' фильма';
+		default:return 'Показано '+num+' кино';
 	}
 	return true;
 }
