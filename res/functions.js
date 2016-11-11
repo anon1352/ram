@@ -277,25 +277,30 @@ function _load(tag){
 		options.current=[];
 		options.index.forEach(function(element,index){ if(database[element].genre.indexOf(tag)>=0){ options.current.push(element); } });
 	}
-	var go=new Promise(function(resolve,reject){ // здесь мы только выводим кусок options.current (считая с начала и с лимитом options.limit)
-		if(options.current.length==0){ reject(); return false; }
-		var entry='';
-		var j=options.limit;
-			if(j==0) j=options.index.length;
-			if(j>=options.current.length) j=options.current.length;
-		for(var i=0; i<j; i++){
-			entry=(Math.random()*options.current.length)<<0;
-			if(!_show(options.current[entry])){ reject(); return false; }
-			options.current.remove(entry);
-		}
-		options.shown+=j;
-		_count(options.shown,options.shown+options.current.length);
-		resolve();
-	});
-	go.then(
-		function(){ _interact(); setTimeout(function(){ _loading(0); if(options.current.length>0) DOM.moar.reveal(); else DOM.moar.cloak(); },500); },
-		function(){ _error('Ошибка при инициализации.','Catchable promise exception @ _load()'); }
-	);
+	if(window.Promise!==undefined){
+		var go=new Promise(function(resolve,reject){ // здесь мы только выводим кусок options.current (считая с начала и с лимитом options.limit)
+			if(options.current.length==0){ reject(); return false; }
+			var entry='';
+			var j=options.limit;
+				if(j==0) j=options.index.length;
+				if(j>=options.current.length) j=options.current.length;
+			for(var i=0; i<j; i++){
+				entry=(Math.random()*options.current.length)<<0;
+				if(!_show(options.current[entry])){ reject(); return false; }
+				options.current.remove(entry);
+			}
+			options.shown+=j;
+			_count(options.shown,options.shown+options.current.length);
+			resolve();
+		});
+		go.then(
+			function(){ _interact(); setTimeout(function(){ _loading(0); if(options.current.length>0) DOM.moar.reveal(); else DOM.moar.cloak(); },500); },
+			function(){ _error('Ошибка при инициализации.','Catchable promise exception @ _load()'); }
+		);
+	}
+	else {
+		
+	}
 	return true;
 }
 function _search(keywords){
