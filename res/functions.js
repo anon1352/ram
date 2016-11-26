@@ -17,6 +17,7 @@ Array.prototype.remove=function(index){ if(index>=0 && index<this.length) this.s
 	@
 	HIRE ME TODAY!
 */
+var database=databaseNew;
 var reset={total:0,shown:0,current:[],tag:'',searching:false};
 var options={
 	debug:1,
@@ -32,6 +33,7 @@ var options={
 	searching:false,
 	searchmode:0,
 	radio:0,
+	view:false,
 	customize:{ /* defaults */
 		optLimit:16,
 		optTheme:0,
@@ -101,6 +103,7 @@ var DOM={
 	tags:'taglist',
 	loading:'loader',
 	error:'error',
+	done:'done',
 	moar:'moar',
 	reset:'reset',
 	quote:'quote',
@@ -132,11 +135,18 @@ document.addEventListener('DOMContentLoaded',function(){
 		_interact();
 		_count(options.random,options.total);
 	};
-	DOM.moar.onclick=function(){ _load(); };
-	DOM.reset.onclick=function(){ _reset(); _load(); };
+	DOM.moar.onclick=function(){ _quote(); _load(); };
+	DOM.reset.onclick=function(){ _quote(); _reset(); _load(); };
 	DOM.quote.onclick=function(){ _quote(); };
 	DOM.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
 	//DOM.optsave.onclick=function(){ _opt_save(); _opt_apply(); DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000); };
+	DOM.done.onclick=function(){
+		database=(options.view?databaseNew:databaseDone);
+		options.index=Object.keys(database);
+		options.view=!options.view;
+		this.innerHTML=(options.view?'<i class="fa fa-eye-slash"></i>Новое':'<i class="fa fa-eye"></i>Просмотренное');
+		_quote(); _reset(); _load();
+	};
 
 	_apply('#optionlist input',function(element){
 		element.onkeydown=function(event){
@@ -286,7 +296,7 @@ function _load(tag){
 				if(j>=options.current.length) j=options.current.length;
 			for(var i=0; i<j; i++){
 				entry=(Math.random()*options.current.length)<<0;
-				if(!_show(options.current[entry])){ reject(); return false; }
+				if(!_show(options.current[entry])){ reject('Unable to show entry'+entry); return false; }
 				options.current.remove(entry);
 			}
 			options.shown+=j;
@@ -295,12 +305,10 @@ function _load(tag){
 		});
 		go.then(
 			function(){ _interact(); setTimeout(function(){ _loading(0); if(options.current.length>0) DOM.moar.reveal(); else DOM.moar.cloak(); },500); },
-			function(){ _error('Ошибка при инициализации.','Catchable promise exception @ _load()'); }
+			function(r){ _error('Ошибка при инициализации. '+r,'Catchable promise exception @ _load()'); }
 		);
 	}
-	else {
-		
-	}
+	else _error('Go get normal browser cyka blyad');
 	return true;
 }
 function _search(keywords){
@@ -424,11 +432,13 @@ function _show(id){
 						F_subtitle.innerHTML=data.subtitle;
 						F_subtitle.classList.add('full-subtitle');
 						var F_labels=_create('div');
-							if(data.budget.spent <= 100000) F_labels.innerHTML+='<div class="full-elite">Элитное кинцо</div><br/>';
-							if(data.budget.spent >= 10000000) F_labels.innerHTML+='<div class="full-yoba">Йоба</div><br/>';
+							if(data.budget!==undefined){
+								if(data.budget.spent <= 100000) F_labels.innerHTML+='<div class="full-elite">Элитное кинцо</div><br/>';
+								if(data.budget.spent >= 10000000) F_labels.innerHTML+='<div class="full-yoba">Йоба</div><br/>';
+								if(data.budget.gross*5<=data.budget.spent) F_labels.innerHTML+='<div class="full-fail">Не мейнстрим</div><br/>';
+							}
 							if(data.status){ F_labels.innerHTML+='<div class="full-done">Отсмотрено</div><br/>'; article.classList.add('done'); }
 							if(data.out!==true) F_labels.innerHTML+='<div class="full-cs">Coming soon</div><br/>';
-							else if(data.budget.gross*5<=data.budget.spent) F_labels.innerHTML+='<div class="full-fail">Не мейнстрим</div><br/>';
 						F_subtitle.appendChild(F_labels);
 					var F_year=_create('div');
 						F_year.innerHTML=data.year;
@@ -445,8 +455,10 @@ function _show(id){
 							F_country.innerHTML+="<span class='flag flag-"+F_country_fl[f]+"'>"+options.countries[F_country_fl[f]]+"</span>";
 						F_country.classList.add('full-country');
 					var F_budget=_create('div');
-						F_budget.innerHTML=(data.out===true?( (data.budget.spent?'$'+data.budget.spent:'Бутылка 777')+' / '+(data.budget.gross?'$'+data.budget.gross:(data.budget.spent?'дырка от бублика':'(опустевшая)'))+((data.budget.spent<=data.budget.gross)?' (взлетел)':' (провалился)') ):'(ещё не вышел)');
-						F_budget.classList.add('full-budget');
+						if(data.budget!==undefined){
+							F_budget.innerHTML=(data.out===true?( (data.budget.spent?'$'+data.budget.spent:'Бутылка 777')+' / '+(data.budget.gross?'$'+data.budget.gross:(data.budget.spent?'дырка от бублика':'(опустевшая)'))+((data.budget.spent<=data.budget.gross)?' (взлетел)':' (провалился)') ):'(ещё не вышел)');
+							F_budget.classList.add('full-budget');
+						}
 					var F_rating=_create('div');
 						F_rating.classList.add('full-rating');
 						if(data.rating.mal===undefined){
@@ -526,13 +538,14 @@ var quotes=[
 	'ЭЛNТА',
 	'Загрузить ассеты!',
 	'Ошибка: нет ошибки.',
-	'A wild black square invaded! &lt;Stochastica sound explored&gt;',
+	'A wild black square invaded!',
 	'А может, мы забудем всё и сбежим? Навсегда.',
 	'Цифра любимая моя, зелёная.',
 	'Ромио! Ромио! Ромио!',
 	'ПРОГОНДОНЕНО! СЕКАТОРОМ',
-	'Yeah, it is the right position!',
+	'Yea, its a right position!',
 	'Не забывайте закрывать портал в ад!',
+	'Уходя - выключайте мониторы',
 	'Пятилетку - за 4 года, таймгет - за марафон!',
 	'FINAL VITYAN',
 	'Куклоедам - колбасы iз Шинкою',
@@ -545,24 +558,39 @@ var quotes=[
 	'101010',
 	'ОO0 Bekтоp',
 	'Как долететь до Нептуна за один марафон',
-	'Хуяк, хуяк. Хуяк, хуяк. Сука блять',
+	'Хуяк, хуяк. Хуяк, хуяк. Сука, блять',
+	'Родниковая водица',
 	'Эй, парень, не хочешь обратно попрограммировать?',
 	'Очень весело общаться в ассоциации молодых христиан! Иди, общайся с парнями!',
 	'Мы стоим вдвоём под золотым дождём!',
 	'Bitte schnelle zu Regata nach Duisburg.',
-	'Прогондоненный вибротон',
+	'Прогондоненный вибратон',
 	'Диплодоки в Белграде',
 	'Хариус Судзумия из Воронежа',
 	'НИ ЕДИНОГО РАЗРЫВА!',
 	'Кодолион: Вы (не) пьяны',
 	'Называюсь я... Вибро...',
-	'Добавьте соль. Разденьте рыбу.',
-	'Малинки, такие вечеринки',
+	'Добавьте соль. Оденьте рыбу.',
+	'Малинки, малинки, такие вечеринки',
 	'Всё будет хорошо.',
 	'А у меня есть паааааааасека...',
+	'А у меня есть звёооооздочки...',
 	'Ну, а вообще, как дела?',
+	'Я ночами вижу сны про древесину',
+	'Вываливаются гурьбой маленькие медвежата с балалаечками...',
 	'RAMP этого не умеет, напиши скрипт сделаю.',
 	'Хеймен!',
+	'БЕСКОНЕЧНЫЙ ЗАВОД',
+	'Тут все твои друзья',
+	'Настало время писать видеоредактор, видеоредактор сам себя не напишет',
+	'Здесь не шутят!',
+	'Откос от армии по браку с дакимакурой',
+	'Ту би континуум',
+	'Роботы-костоломы',
+	'А я люблю читать, всегда готов пролистать по несколько томов',
+	'Влияние шампуня и керосина на аппетит диджеев',
+	'Дуэли аутистов, обнимание кактусов, стрельба в ноги',
+	'Еженедельные рейсы Вечер-Улиточка',
 	'Это как магазин телевизоров, ну вы поняли.'
 ];
 function _quote(){ DOM.quote.innerHTML=quotes[(Math.random()*quotes.length)<<0]; }
