@@ -62,6 +62,7 @@ var options={
 		criminal:{count:0,title:'Улицы разбитых блинов',tagname:'криминал'},
 		coolstory:{count:0,title:'Охуительные истории',tagname:'охуительные истории'},
 		short:{count:0,title:'Короткометражное',tagname:'короткометражка'},
+		musical:{count:0,title:'Мюзикл',tagname:'с пением и танцами'},
 		erotic:{count:0,title:'Эротика',tagname:'эротика'}
 	},
 	countries:{

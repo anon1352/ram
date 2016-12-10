@@ -540,6 +540,13 @@ button:hover { background: #583d55; }
 	line-height: 1.2;
 }
 
+.icon-warning {
+	display: inline-block;
+	background: url(alert.ico) 0 0 / 32px 32px no-repeat transparent;
+	width: 32px; height: 32px;
+	vertical-align: bottom;
+}
+
 
 .noselect {
 	-moz-user-select: none;
