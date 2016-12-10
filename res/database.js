@@ -1950,7 +1950,7 @@ var databaseNew={ // а вы тоже храните базы данных в о
 		poster:'Le corniaud.jpg',
 		year:1965,out:true,
 		duration:111,
-		genre:['horror','thriller'],
+		genre:['comedy','criminal'],
 		country:'fr|it',
 		rating:{imdb:7.5,kp:7.91},
 		status:false
