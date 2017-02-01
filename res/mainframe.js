@@ -1,3 +1,4 @@
+function Y(a,b=0){ if(a===undefined) return b; return a; }
 function _clear(e){if(e) while(e.firstChild) e.removeChild(e.firstChild);}
 function _id(id){ return document.getElementById(id); }
 function _selector(s){ return document.querySelectorAll(s); }
@@ -322,12 +323,20 @@ function _filter(type,dir){
 		case 8: crit='year'; break;
 		default: return _error('Unable to gain word @ _filter()'); break;
 	}
+	var x,y;
 	options.mirror.sort(function(a,b){
-		if(database[a][crit]===undefined) database[a][crit]=0;
-		if(database[b][crit]===undefined) database[b][crit]=0;
-		if(database[a][crit] >= database[b][crit]) return dir?1:-1;
-		if(database[a][crit] <  database[b][crit]) return dir?-1:1;
-		return 0;
+		if(crit=='duration' || crit=='year'){
+			x=Y(database[a][crit],0);
+			y=Y(database[b][crit],0);
+		} else if(crit=='rating'){
+			x=Y(database[a][crit].mal,Y(database[a][crit].imdb,Y(database[a][crit].kp,0)));
+			y=Y(database[b][crit].mal,Y(database[b][crit].imdb,Y(database[b][crit].kp,0)));
+		} else if(crit=='budget'){
+			if(database[a][crit]===undefined) x=0; else x=database[a][crit].spent+database[a][crit].gross;
+			if(database[b][crit]===undefined) y=0; else y=database[b][crit].spent+database[b][crit].gross;
+		}
+		if(x >= y) return dir?1:-1;
+		return dir?-1:1;
 	});
 	//options.mirror.forEach(function(element,index){ console.info(index+'#'+element+' has '+database[element].duration); });
 }
