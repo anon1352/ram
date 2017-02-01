@@ -10,37 +10,27 @@ HTMLElement.prototype.appendChilds=function(){ for(var e in arguments) if(argume
 HTMLElement.prototype.cloak=function(){ this.style.display="none"; }
 HTMLElement.prototype.reveal=function(){ this.style.display="block"; }
 Array.prototype.remove=function(index){ if(index>=0 && index<this.length) this.splice(index,1); }
-/*
-	НАПИСАЛ КУЧУ ГОВНОКОДА
-	@
-	ЗАТО НИКУДА НЕ ШЛЁТ ЗАПРОСЫ
-	@
-	HIRE ME TODAY!
-*/
-var database=databaseNew;
-var reset={total:0,shown:0,current:[],tag:'',searching:false};
-var options={
-	debug:1,
-	theme:0,
-	limit:12,
-	index:Object.keys(database),
-	total:0,
-	shown:0,
-	current:[],
-	tag:'',
-	ellipsis:{F:22,S:33},
-	random:1,
-	searching:false,
-	searchmode:0,
-	radio:0,
-	view:false,
-	customize:{ /* defaults */
-		optLimit:16,
-		optTheme:0,
-		optSearch:0,
-		optRandom:12,
-		optRadio:0,
-		optDebug:1
+
+
+var Data={
+	default:{
+		customize:{
+			optLimit:16,
+			optTheme:0,
+			optSearch:0,
+			optRandom:12,
+			optRadio:0,
+			optDebug:1
+		},
+		total:0,
+		shown:0,
+		current:[],
+		tag:'',
+		searching:false,
+		searchmode:0,
+		random:1,
+		limit:12,
+		theme:0
 	},
 	tags:{
 		horror:{count:0,title:'Крипота',tagname:'ужастик'},
@@ -65,7 +55,7 @@ var options={
 		musical:{count:0,title:'Мюзикл',tagname:'с пением и танцами'},
 		erotic:{count:0,title:'Эротика',tagname:'эротика'}
 	},
-	countries:{
+	country:{
 		'ru':'Россия',
 		'jp':'Япония',
 		'be':'Бельгия',
@@ -95,28 +85,84 @@ var options={
 		'ussr':'СССР'
 	}
 };
+var options={
+	debug:1,
+	theme:0,
+	limit:12,
+	index:Object.keys(database),
+	total:0,
+	shown:0,
+	current:[],
+	tag:'',
+	ellipsis:{F:22,S:33},
+	random:1,
+	searching:false,
+	searchmode:0,
+	radio:0,
+	view:0,
+};
 var DOM={
-	logo:'logo',
-	list:'list',
-	counter:'counter',
-	feedback:'feedback',
-	random:'random',
-	tags:'taglist',
-	loading:'loader',
-	error:'error',
-	done:'done',
-	moar:'moar',
-	reset:'reset',
-	quote:'quote',
-	search:'search',ksearch:'keywords',
+	logo:'',
+	list:'',
+	counter:'',
+	feedback:'',
+	random:'',
+	tags:'',
+	loading:'',
+	error:'',
+	done:'',
+	moar:'',
+	reset:'',
+	quote:'',
+	search:'',ksearch:'',
+	specials:'',
 	api:{},
-	options:'options',/*optsave:'optSave',*/optsaved:'optSaved',opterror:'optError'
+	options:'',/*optsave:'optSave',*/optsaved:'',opterror:'',
+	setup:function(){
+		for(var element in ['logo','list','counter','feedback',
+			'random','taglist','loader','error','done','moar',
+			'reset','quote','search','keywords','specials',
+			'options','optSaved','optError']) try { this.element=_id(element); } catch(e) { console.error(e); }
+		this.logo.onclick=function(){ _reset(); _load(); };
+		this.feedback.onclick=function(){ window.open("https://anon.fm/feedback/","win1feedback","top=400,left=250,width=560,height=235,toolbar=no"); };
+		this.random.onclick=function(){
+			_reset();
+			for(var i=0;i<options.random;i++){ _show(_random()); }
+			options.shown=options.random;
+			_interact();
+			_count(options.random,options.total);
+		};
+		this.moar.onclick=function(){ _quote(); _load(); };
+		this.reset.onclick=function(){ _quote(); _reset(); _load(); };
+		this.quote.onclick=function(){ _quote(); };
+		this.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
+		this.specials.onclick=function(){
+			if(options.view==2){ database=databaseNew; options.view=0; }
+			else { database=databaseSpecials; options.view=2; }
+			options.index=Object.keys(database);
+			options.view=2;
+			_quote(); _reset(); _load();
+		};
+		//DOM.optsave.onclick=function(){ _opt_save(); _opt_apply(); DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000); };
+		this.done.onclick=function(){
+			if(options.view==1){ database=databaseNew; options.view=0; }
+			else { database=databaseDone; options.view=1; }
+			options.index=Object.keys(database);
+			this.innerHTML=((options.view==1)?'<i class="fa fa-eye-slash"></i>Новое':'<i class="fa fa-eye"></i>Просмотренное');
+			_quote(); _reset(); _load();
+		};
+	}
+};
+var Index=function(){
+	this.refresh=function(){};
+	this.init=function(){};
 };
 document.addEventListener('mouseout',function(event){ event.preventDefault(); });
 document.addEventListener('DOMContentLoaded',function(){
+	var database=databaseNew;
 	options.total=options.index.length;
 	options.api=location.hash.substring(1).split('&');
-	for(var element in DOM){ DOM[element]=_id(DOM[element]); }
+	
 	for(var E in database){ database[E].genre.forEach(function(element,index){ options.tags[element].count++; }); }
 	for(var T in options.tags){
 		var li=_create('li');
@@ -127,27 +173,9 @@ document.addEventListener('DOMContentLoaded',function(){
 		DOM.tags.appendChild(li);
 	}
 
-	DOM.logo.onclick=function(){ _reset(); _load(); };
-	DOM.feedback.onclick=function(){ window.open("https://anon.fm/feedback/","win1feedback","top=400,left=250,width=560,height=235,toolbar=no"); };
-	DOM.random.onclick=function(){
-		_reset();
-		for(var i=0;i<options.random;i++){ _show(_random()); }
-		options.shown=options.random;
-		_interact();
-		_count(options.random,options.total);
-	};
-	DOM.moar.onclick=function(){ _quote(); _load(); };
-	DOM.reset.onclick=function(){ _quote(); _reset(); _load(); };
-	DOM.quote.onclick=function(){ _quote(); };
-	DOM.search.onkeydown=function(event){ if(event.keyCode==13) _search(ksearch.value); };
-	//DOM.optsave.onclick=function(){ _opt_save(); _opt_apply(); DOM.optsaved.reveal(); setTimeout(function(){ DOM.optsaved.cloak(); },2000); };
-	DOM.done.onclick=function(){
-		database=(options.view?databaseNew:databaseDone);
-		options.index=Object.keys(database);
-		options.view=!options.view;
-		this.innerHTML=(options.view?'<i class="fa fa-eye-slash"></i>Новое':'<i class="fa fa-eye"></i>Просмотренное');
-		_quote(); _reset(); _load();
-	};
+	DOM.setup();
+
+	
 
 	_apply('#optionlist input',function(element){
 		element.onkeydown=function(event){
@@ -273,6 +301,8 @@ function _log(){ for(var A in arguments) console.log(arguments[A]); } // для 
 function _reset(){
 	for(var o in reset){ options[o]=reset[o]; }
 	options.total=options.index.length;
+	database=databaseNew; options.view=0;
+	options.index=Object.keys(database);
 	options.current=options.index.slice(0);
 	options.tag='';
 	_clear(DOM.list);

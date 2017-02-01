@@ -84,7 +84,7 @@ main {
 nav {
 	list-style: none;
 	color: #ccc;
-	width: 100%; height: 240px;
+	width: 100%; height: 270px;
 }
 nav li {
 	display: block;
@@ -159,18 +159,26 @@ article {
 	box-sizing: border-box;
 	box-shadow: 0 0 12px #999;
 }
+article.sort {
+	display: block;
+	width: auto; height: 100px;
+	background-size: 80px 100px;
+	padding-left: 80px;
+	text-align: left;
+}
 article .title,
 article .description,
 article .full { opacity: 0; }
+article.sort .title,
+article.sort .description,
+article.sort .full { opacity: 1; }
 article:hover .title,
 article:hover .description,
 article:hover .full { opacity: 1; }
 
-article .title {
-	background: #eee;
-	border-bottom: 1px solid #111;
-}
-.title .orgtitle {
+article .title { background: #eee; border-bottom: 1px solid #111; }
+article.sort .title { background: none; border: none; text-align: left; }
+article .title .orgtitle {
 	margin: 0 10px; padding: 10px 0 5px 0;
 	color: #444;
 	font-size: 11pt;
@@ -178,11 +186,27 @@ article .title {
 	text-transform: uppercase;
 	border-bottom: 1px solid #ccc;
 }
-.title .subtitle {
+article.sort .title .orgtitle {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0; padding: 0;
+	text-align: left;
+	text-indent: 10px;
+	line-height: 25px;
+	border: none;
+}
+article .title .subtitle {
 	padding: 5px 0 10px 0;
 	color: #777;
 	font-size: 9pt;
 	font-style: italic;
+}
+article.sort .title .subtitle {
+	display: inline-block;
+	vertical-align: top;
+	text-align: left;
+	padding: 0 0 0 10px;
+	line-height: 25px;
 }
 article .description:before { content:'Описание: '; color:#999; }
 article .description {
@@ -201,6 +225,18 @@ article .description {
 	border-top: 1px solid #111;
 	overflow: hidden;
 }
+article.sort .description {
+	position: initial;
+	background: none;
+	color: #333;
+	padding: 0 10px;
+	font-size: 10pt;
+	white-space: initial;
+	word-wrap: break-word;
+	word-break: break-word;
+	border: none;
+}
+article.sort .description:after { content: '..'; }
 article .full {
 	position: absolute;
 	display: block;
@@ -213,6 +249,13 @@ article .full {
 	letter-spacing: 1px;
 }
 article .full:hover { background: #753f6e; }
+article.sort .full {
+	display: inline-block;
+	vertical-align: bottom;
+	width: 90%; width: calc(100% - 80px);
+	background: #ccc; color: #333;
+	text-align: center;
+}
 [data-toggle="false"] > div { visibility: hidden; opacity: 0; }
 [data-toggle="true"] > div { visibility: visible; opacity: 1; }
 [data-toggle="true"] { visibility: visible!important; opacity: 1!important; }
@@ -345,6 +388,28 @@ button:hover { background: #583d55; }
 	line-height: 15px;
 	border: 1px solid;
 }
+.full-anonrate,
+.full-special {
+	display: inline-block;
+	margin-top: 25px;
+	max-width: 515px;
+	padding: 5px 10px;
+	color: #333;
+	font-size: 9pt;
+	font-style: italic;
+	letter-spacing: 0;
+	border: 1px solid #777;
+}
+.full-anonrate:before {
+	content: 'Аноним: ';
+	color: #999;
+	font-weight: bold;
+}
+.full-special:before {
+	content: 'Акция: ';
+	color: #999;
+	font-weight: bold;
+}
 
 #logo {
 	display: block;
@@ -395,6 +460,7 @@ button:hover { background: #583d55; }
 #moar { display: none; }
 
 #options { position: relative; }
+#sort label,
 #tags label,
 #options label {
 	display: block;
@@ -409,8 +475,10 @@ button:hover { background: #583d55; }
 	color: #ccc;
 	font-weight: bold;
 }
+
 #tags input[type="checkbox"], #options input[type="checkbox"] { display: none; }
-#tags input[type="checkbox"] ~ ul {
+#tags input[type="checkbox"] ~ ul,
+#tags > ul {
 	display: block;
 	position: fixed;
 	top: 0; left: 200px;
@@ -423,22 +491,46 @@ button:hover { background: #583d55; }
 	visibility: hidden;
 	opacity: 0;
 }
-#options input[type="checkbox"] ~ ul {
+#sort > ul {
 	display: block;
 	position: fixed;
-	top: 238px; left: 200px;
-	padding: 0;
-	width: 432px; height: 240px;
+	top: 268px; left: 200px;
 	background: #0b0b0e;
-	cursor: default;
-	box-sizing: border-box;
+	padding: 0;
+	width: 200px;
 	z-index: 9;
+	cursor: default;
 	visibility: hidden;
+	opacity: 0;
+}
+#options input[type="checkbox"] ~ ul {
+	display: block;
+	visibility: hidden;
+	position: fixed;
+	top: 388px; left: 200px;
+	margin:0; padding: 0;
+	width: 432px; height: 162px;
+	background: #0b0b0e;
+	box-sizing: border-box;
+	cursor: default;
+	z-index: 9;
 	opacity: 0;
 }
 #options input[type="checkbox"]:checked ~ ul,
 #tags input[type="checkbox"]:checked ~ ul,
-#tags:hover > ul { left:200px; visibility: visible!important; opacity: 1!important; }
+#sort:hover > ul, #tags:hover > ul { left:200px; visibility: visible!important; opacity: 1!important; }
+#sort ul li {
+	display: block;
+	list-style: none;
+	vertical-align: top;
+	text-transform: none;
+	font-size: 8pt;
+	text-align: left;
+	line-height: 20px;
+	width: 200px;
+	padding: 5px 10px;
+	box-sizing: border-box;
+}
 #tags ul li {
 	display: block;
 	list-style: none;
@@ -463,16 +555,18 @@ button:hover { background: #583d55; }
 	box-sizing: border-box;
 	cursor: default;
 }
-#tags ul li:hover, #options ul li:hover { background: #583d55; }
+#sort ul li:hover, #tags ul li:hover, #options ul li:hover { background: #583d55; }
+#sort ul li span,
 #tags ul li span {
-	width: 30px;
 	display: inline-block;
+	min-width: 30px;
+	padding: 0 5px;
+	color: white; background: #111217;
 	text-align: center;
-	color: white;
-	background: #111217;
 	font-weight: normal;
+	box-sizing: border-box;
 }
-#tags ul li:hover span { opacity: 1; }
+#sort ul li:hover span, #tags ul li:hover span { opacity: 1; }
 #options ul li span {
 	display: inline-block;
 	width: 140px;
@@ -540,13 +634,44 @@ button:hover { background: #583d55; }
 	line-height: 1.2;
 }
 
+#specials { background: brown; }
+#specials:hover { background: #583d55; }
+
 .icon-warning {
 	display: inline-block;
 	background: url(alert.ico) 0 0 / 32px 32px no-repeat transparent;
 	width: 32px; height: 32px;
 	vertical-align: bottom;
 }
+.inactive {
+	opacity: .5;
+	cursor: default;
+}
+.inactive:hover { background:initial; }
 
+#switch {
+	position: absolute;
+	top: 20px; right: 22px;
+	background: white;
+	border: 1px solid #996793;
+	cursor: pointer;
+}
+#switch i {
+	width: 20px;
+	color: #996793;
+	padding: 6px 5px 4px 5px;
+	font-size: 14pt;
+	line-height: 20px;
+	text-align: center;
+}
+#switch i:hover { background: #996793; color:#eee; }
+
+.switch {}
+.switchbox,
+.switchbox ~ .switch-on,
+.switchbox:checked ~ .switch-off { display:none; }
+.switchbox ~ .switch-off,
+.switchbox:checked ~ .switch-on { display:block; }
 
 .noselect {
 	-moz-user-select: none;

@@ -15,7 +15,8 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="res/fa.css" />
 	<script type="text/javascript" src="res/database.js"></script>
 	<script type="text/javascript" src="res/database.done.js"></script>
-	<script type="text/javascript" src="res/functions.js"></script>
+	<script type="text/javascript" src="res/database.specials.js"></script>
+	<script type="text/javascript" src="res/mainframe.js"></script>
 	<title>[RAM] Кинотека</title>
 </head>
 <body>
@@ -26,10 +27,19 @@
 	</div>
 	<nav class="smooth">
 		<li id="feedback"><i class="fa fa-edit"></i>Предложить</li>
-		<li id="add"><i class="fa fa-plus"></i>Добавить</li>
+		<!--li id="add"><i class="fa fa-plus"></i>Добавить</li-->
+		<li id="sort">
+			<label for="sortwindow"><i class="fa fa-sort-amount-desc"></i>Сортировать</label>
+			<ul id="sortlist" class="smooth">
+				<!--li>Тип фильтрации: <span id="sorttype">директ</span></li-->
+				<li class="filter" data-filter="1" data-direction="0">..по длительности</li>
+				<li class="filter" data-filter="2" data-direction="0">..по рейтингу</li>
+				<li class="filter" data-filter="4" data-direction="0">..по бюджету</li>
+				<li class="filter" data-filter="8" data-direction="0">..по году</li>
+			</ul>
+		</li>
 		<li id="tags">
 			<label for="tagwindow"><i class="fa fa-sort-alpha-asc"></i>Жанры</label>
-			<input type="checkbox" id="tagwindow" />
 			<ul id="taglist" class="smooth"></ul>
 		</li>
 		<li id="done"><i class="fa fa-eye"></i>Просмотренное</li>
@@ -44,13 +54,13 @@
 				<li><span>Тема</span><select name="optTheme"><option>Светлая</option><option>Тёмная</option><option>Автоматически</option></select></li>
 				<li><span>Поиск</span><select name="optSearch"><option>Дизъюнктивный</option><option>Конъюнктивный</option><option>Редуцирующий</option><option>Спиральный</option><option>Ассоциативный</option></select></li>
 				<li><span>Рандом</span><input type="number" name="optRandom" value="1" placeholder="Количество фильмов в выборке" /></li>
-				<li><span>Радио</span><select name="optRadio"><option>Выключено по умолчанию</option><option>Включается при заходе</option><option>Убрано</option></select></li>
 				<li><span>Debug</span><select name="optDebug"><option>Off</option><option>On</option></select></li>
 				<!--li><span id="optSave">Сохранить</span></li-->
 			</ul>
 		</li>
 		<li id="search"><input type="text" placeholder="Поиск" id="ksearch" /><i class="fa fa-search"></i></li>
-		<li id="reset"><i class="fa fa-refresh"></i>Сброс</li>
+		<li id="reset"><i class="fa fa-close"></i>Сброс</li>
+		<li id="specials"><i class="fa fa-star"></i>Спец-предложения</li>
 	</nav>
 	<div id="counter"></div>
 	<div id="loader"></div>
@@ -73,5 +83,10 @@
 	</footer>
 	<div>WTFPL &copy; Anonymous (2016)<br/>&reg; Yiiii Soft Ltd. &amp; Nigma Inc.</div>
 </main>
+<aside>
+	<label id="switch" class="switch" title="Переключение вида">
+		<input type="checkbox" class="switchbox" /><i class="smooth switch-off fa fa-th-large"></i><i class="smooth switch-on fa fa-th-list"></i>
+	</label>
+</aside>
 </body>
 </html>
